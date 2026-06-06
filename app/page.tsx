@@ -89,13 +89,21 @@ export default function Home() {
 
   const onAnalyze = async () => {
     if (!file) return;
+
+    // 한도 도달 시 분석 시도하지 않고 바로 후원 모달 오픈
+    if (limitStatus && !limitStatus.allowed && !limitStatus.unlocked) {
+      setDonateReason("limit");
+      setDonateOpen(true);
+      return;
+    }
+
     setStatus("analyzing");
     setErrorMsg("");
     try {
       const fd = new FormData();
       fd.append("image", file);
       const res = await fetch("/api/analyze", { method: "POST", body: fd });
-      const data = await res.json();
+      const data = await res.json().catch(() => null);
       // 응답에 limitStatus가 동봉된 경우 항상 갱신
       if (data?.limitStatus) {
         setLimitStatus(data.limitStatus as LimitStatus);
@@ -113,9 +121,13 @@ export default function Home() {
       setResult(data as AnalysisResult);
       setStatus("result");
     } catch (err) {
-      setErrorMsg(
-        err instanceof Error ? err.message : "알 수 없는 오류가 발생했습니다."
-      );
+      // fetch 자체가 실패한 경우 (네트워크/서버 다운) 메시지 사용자 친화적으로
+      const raw = err instanceof Error ? err.message : "알 수 없는 오류가 발생했습니다.";
+      const friendly =
+        raw === "Load failed" || raw === "Failed to fetch" || raw.includes("network")
+          ? "서버에 연결할 수 없습니다. 인터넷 연결을 확인하고 잠시 후 다시 시도해 주세요."
+          : raw;
+      setErrorMsg(friendly);
       setStatus("error");
     }
   };
@@ -697,7 +709,7 @@ export default function Home() {
                   border: string;
                 }[] = [
                   { key: "overall", label: "Overall", emoji: "🌐", bg: "bg-white/70 dark:bg-zinc-900/40", border: "border-indigo-200 dark:border-indigo-900" },
-                  { key: "pros", label: "장점", emoji: "👍", bg: "bg-emerald-50/80 dark:bg-emerald-950/30", border: "border-emerald-200 dark:border-emerald-900" },
+                  { key: "pros", label: "장점", emoji: "👍🏻", bg: "bg-emerald-50/80 dark:bg-emerald-950/30", border: "border-emerald-200 dark:border-emerald-900" },
                   { key: "cautions", label: "주의점", emoji: "⚠️", bg: "bg-amber-50/80 dark:bg-amber-950/30", border: "border-amber-200 dark:border-amber-900" },
                   { key: "improvements", label: "개선점", emoji: "🛠", bg: "bg-blue-50/80 dark:bg-blue-950/30", border: "border-blue-200 dark:border-blue-900" },
                 ];
