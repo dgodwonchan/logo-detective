@@ -52,7 +52,7 @@ export default function Home() {
 
   // 페이지 진입 시 잔여 횟수 조회
   useEffect(() => {
-    fetch("/api/status")
+    fetch("/api/status", { credentials: "include" })
       .then((r) => r.json())
       .then((s: LimitStatus) => setLimitStatus(s))
       .catch(() => {});
@@ -102,7 +102,7 @@ export default function Home() {
     try {
       const fd = new FormData();
       fd.append("image", file);
-      const res = await fetch("/api/analyze", { method: "POST", body: fd });
+      const res = await fetch("/api/analyze", { method: "POST", body: fd, credentials: "include" });
       const data = await res.json().catch(() => null);
       // 응답에 limitStatus가 동봉된 경우 항상 갱신
       if (data?.limitStatus) {

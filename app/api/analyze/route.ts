@@ -1,6 +1,6 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { NextRequest } from "next/server";
-import { consume, getClientIp, getStatus } from "@/app/lib/rateLimiter";
+import { getClientIp, consume, getStatus, getUnlockFromHeaders } from "@/app/lib/rateLimiter";
 import { detectWeb } from "@/app/lib/visionApi";
 
 export const runtime = "nodejs";
@@ -134,7 +134,8 @@ const responseSchema = {
 export async function POST(request: NextRequest) {
   // 1) Rate limit 사전 체크 (분석 시작 전)
   const ip = getClientIp(request.headers);
-  const preStatus = getStatus(ip);
+  const cookieUnlock = getUnlockFromHeaders(request.headers);
+  const preStatus = getStatus(ip, cookieUnlock);
   if (!preStatus.allowed) {
     return Response.json(
       {
@@ -312,7 +313,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 분석 성공 시 카운트 소비 + 응답에 잔여 횟수 포함
-    const postStatus = consume(ip);
+    const postStatus = consume(ip, cookieUnlock);
 
     // Vision API Web Detection 결과 포함
     const webDetection = webResult

@@ -60,7 +60,7 @@ export default function DonateModal({
     setSubmitting(true);
     setError("");
     try {
-      const res = await fetch("/api/unlock", { method: "POST" });
+      const res = await fetch("/api/unlock", { method: "POST", credentials: "include" });
       const data = (await res.json()) as LimitStatus;
       if (!res.ok) throw new Error("잠금 해제에 실패했습니다.");
       onUnlocked?.(data);
