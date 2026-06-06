@@ -145,64 +145,38 @@ export default function Home() {
     <div className="flex min-h-screen flex-1 flex-col bg-zinc-50 dark:bg-zinc-950">
       {/* 헤더 */}
       <header className="border-b border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-950/70 backdrop-blur sticky top-0 z-10">
-        <div className="mx-auto max-w-5xl px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-xl overflow-hidden bg-black ring-1 ring-zinc-200 dark:ring-zinc-800 shrink-0">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/logo.png"
-                alt="로고 디텍티브"
-                className="h-full w-full object-contain"
-              />
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between gap-2">
+          {/* 좌측: 로고 + 제목 */}
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+            <div className="shrink-0 h-9 w-9 sm:h-10 sm:w-10 rounded-xl overflow-hidden bg-black ring-1 ring-zinc-200 dark:ring-zinc-800">
+              <img src="/logo.png" alt="로고 디텍티브" className="h-full w-full object-contain" />
             </div>
-            <div>
-              <h1 className="text-lg font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
-                로고 디텍티브 <span className="text-zinc-400 dark:text-zinc-500 font-medium">by dgodwonchan</span>
+            <div className="min-w-0">
+              <h1 className="flex items-center gap-1.5 text-base sm:text-lg font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+                <span className="truncate">로고 디텍티브</span>
+                <span className="shrink-0 text-xs font-medium text-zinc-400 dark:text-zinc-500">by dgodwonchan</span>
               </h1>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-[11px] sm:text-xs text-zinc-500 dark:text-zinc-400 truncate">
                 Logo Detective · 로고 표절 감정 도구
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            {/* 소셜 아이콘 */}
-            <nav className="flex items-center gap-1" aria-label="소셜 채널">
-              <a
-                href="https://www.youtube.com/@wonchan"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="디고디원찬 유튜브"
-                className="h-8 w-8 rounded-full flex items-center justify-center text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 transition"
-              >
-                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-                </svg>
+
+          {/* 우측: 소셜 + 사용량 + 새로 시작 */}
+          <div className="flex items-center gap-1.5 shrink-0">
+            {/* 소셜 아이콘 (작게) */}
+            <nav className="hidden sm:flex items-center gap-0.5" aria-label="소셜 채널">
+              <a href="https://www.youtube.com/@wonchan" target="_blank" rel="noopener noreferrer"
+                className="h-7 w-7 sm:h-8 sm:w-8 rounded-full flex items-center justify-center text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 transition">
+                <svg className="h-3.5 w-3.5 sm:h-4 sm:w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" /></svg>
               </a>
-              <a
-                href="https://www.instagram.com/dgodwonchan"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="디고디원찬 인스타그램"
-                className="h-8 w-8 rounded-full flex items-center justify-center text-pink-500 hover:bg-pink-50 dark:hover:bg-pink-950/40 transition"
-              >
-                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-                </svg>
+              <a href="https://www.instagram.com/dgodwonchan" target="_blank" rel="noopener noreferrer"
+                className="h-7 w-7 sm:h-8 sm:w-8 rounded-full flex items-center justify-center text-pink-500 hover:bg-pink-50 dark:hover:bg-pink-950/40 transition">
+                <svg className="h-3.5 w-3.5 sm:h-4 sm:w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></svg>
               </a>
-              <a
-                href="http://minimalist.kr/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="미니멀리스트 스튜디오"
-                className="h-8 w-8 rounded-full flex items-center justify-center text-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 transition"
-              >
-                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6" />
-                  <polyline points="15 3 21 3 21 9" />
-                  <line x1="10" y1="14" x2="21" y2="3" />
-                </svg>
+              <a href="http://minimalist.kr/" target="_blank" rel="noopener noreferrer"
+                className="h-7 w-7 sm:h-8 sm:w-8 rounded-full flex items-center justify-center text-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 transition">
+                <svg className="h-3.5 w-3.5 sm:h-4 sm:w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3" /></svg>
               </a>
             </nav>
 
@@ -217,7 +191,7 @@ export default function Home() {
                   }
                   setDonateOpen(true);
                 }}
-                className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 dark:border-zinc-700 bg-white/60 dark:bg-zinc-900/60 px-3 py-1.5 text-xs font-medium text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition"
+                className="inline-flex shrink-0 items-center gap-1 rounded-full border border-zinc-200 dark:border-zinc-700 bg-white/60 dark:bg-zinc-900/60 px-2 sm:px-3 py-1.5 text-[11px] sm:text-xs font-medium text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition"
                 aria-label="사용량 / 후원하기"
               >
                 {limitStatus.unlocked ? (
@@ -229,30 +203,26 @@ export default function Home() {
                 ) : (
                   <>
                     <span aria-hidden>☕</span>
-                    <span className="hidden sm:inline">
-                      오늘 {limitStatus.limit - limitStatus.remaining}/
-                      {limitStatus.limit}회 사용
-                    </span>
-                    <span className="sm:hidden">
-                      {limitStatus.limit - limitStatus.remaining}/
-                      {limitStatus.limit}
+                    <span>
+                      {limitStatus.limit - limitStatus.remaining}/{limitStatus.limit}
                     </span>
                   </>
                 )}
               </button>
             )}
 
-            {/* 새로 시작 버튼 */}
+            {/* 새로 시작 버튼 (작은 화면에서는 아이콘만) */}
             {(file || result) && (
               <button
                 onClick={onReset}
-                className="inline-flex items-center gap-1.5 rounded-full bg-zinc-900 dark:bg-white px-4 py-1.5 text-xs font-semibold text-white dark:text-zinc-900 hover:bg-zinc-700 dark:hover:bg-zinc-200 transition shadow-sm"
+                className="inline-flex shrink-0 items-center gap-1 rounded-full bg-zinc-900 dark:bg-white px-2.5 sm:px-4 py-1.5 text-[11px] sm:text-xs font-semibold text-white dark:text-zinc-900 hover:bg-zinc-700 dark:hover:bg-zinc-200 transition shadow-sm"
+                title="새로 시작"
               >
-                <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="1 4 1 10 7 10" />
                   <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
                 </svg>
-                새로 시작
+                <span className="hidden sm:inline">새로 시작</span>
               </button>
             )}
           </div>
@@ -621,18 +591,20 @@ export default function Home() {
                       key={i}
                       className="rounded-xl border border-zinc-200 dark:border-zinc-800 p-4 bg-zinc-50/50 dark:bg-zinc-950/40"
                     >
-                      <div className="flex items-start gap-4">
-                        <BrandLogo url={b.officialUrl} name={b.name} />
+                      <div className="flex items-start sm:items-center gap-3 sm:gap-4">
+                        <div className="shrink-0">
+                          <BrandLogo url={b.officialUrl} name={b.name} />
+                        </div>
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-2 flex-wrap">
                             <h4 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
                               {b.name}
                             </h4>
-                            <span className="text-xs text-zinc-500 dark:text-zinc-400">
+                            <span className="text-xs text-zinc-500 dark:text-zinc-400 break-keep">
                               {b.industry} · {b.country} · {b.foundedYear}
                             </span>
                           </div>
-                          <p className="mt-1.5 text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed">
+                          <p className="mt-1.5 text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed break-keep">
                             {b.reasonForSimilarity}
                           </p>
                           {b.officialUrl && (
