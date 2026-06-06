@@ -173,31 +173,41 @@ export async function POST(request: NextRequest) {
 
     // Vision API 결과가 있으면 Gemini 프롬프트에 추가 컨텍스트 제공
     let enhancedPrompt = ANALYSIS_PROMPT;
-    if (webResult && (webResult.matchingPages.length > 0 || webResult.entities.length > 0)) {
+    if (webResult && (webResult.matchingPages.length > 0 || webResult.entities.length > 0 || webResult.bestGuessLabels.length > 0)) {
       const contextLines: string[] = [
-        "\n\n---\n[참고: 구글 웹 검색으로 이 로고의 실제 출처를 찾았습니다. 아래 정보를 분석에 활용하세요.]",
+        "\n\n---",
+        "[중요: Google Vision AI 역방향 이미지 검색 결과가 있습니다. 이 데이터는 신뢰할 수 있는 실제 검증된 정보이므로 반드시 우선적으로 활용하세요.]",
       ];
 
       if (webResult.bestGuessLabels.length > 0) {
-        contextLines.push(`\n추정 브랜드명: ${webResult.bestGuessLabels.join(", ")}`);
+        contextLines.push(`\n[Vision AI 추정 브랜드/주제]`);
+        contextLines.push(webResult.bestGuessLabels.join(", "));
       }
 
       if (webResult.entities.length > 0) {
-        contextLines.push(`\n관련 엔터티:`);
-        webResult.entities.slice(0, 5).forEach((e) => {
-          contextLines.push(`- ${e.description} (신뢰도: ${e.score})`);
+        contextLines.push(`\n[Vision AI 식별 엔터티 - 신뢰도순]`);
+        webResult.entities.slice(0, 8).forEach((e) => {
+          contextLines.push(`- ${e.description} (score: ${e.score})`);
         });
       }
 
       if (webResult.matchingPages.length > 0) {
-        contextLines.push(`\n이 로고가 사용된 웹페이지:`);
-        webResult.matchingPages.slice(0, 5).forEach((p) => {
-          contextLines.push(`- ${p.pageTitle}: ${p.url}`);
+        contextLines.push(`\n[이 로고/이미지가 실제로 사용 중인 웹페이지]`);
+        webResult.matchingPages.slice(0, 8).forEach((p) => {
+          contextLines.push(`- ${p.pageTitle} | ${p.url}`);
         });
       }
 
-      contextLines.push(`\n위 정보가 있으면 유사 브랜드 검색에서 정확한 출처 브랜드를 최상위에 포함시키세요. URL도 실제 URL을 사용하세요.`);
+      contextLines.push(`
+[필수 지침]
+1. 위 Vision AI 데이터에 특정 브랜드명/회사명/제품이 명시되어 있다면, 그것이 이 로고의 실제 주인일 가능성이 매우 높습니다. similarBrands의 1순위에 반드시 포함하고 similarityScore를 95 이상으로 설정하세요.
+2. similarBrands는 단순히 "산세리프 폰트를 쓴다"는 이유로 UNIQLO, H&M, Zara처럼 무관한 대형 브랜드를 나열하지 마세요. **시각적/구조적으로 정말 비슷한 로고**를 가진 브랜드만 선택하세요. 비슷한 점이 모호하면 차라리 적게 (1~2개) 반환하세요.
+3. 매칭 페이지의 URL을 그대로 officialUrl에 사용하세요 (추측하지 말 것).
+4. 위 정보로도 출처를 특정할 수 없을 때만 추정 브랜드를 제시하되, 그 경우 similarityScore를 50 이하로 낮추고 reasonForSimilarity에 "확실하지 않음"을 명시하세요.`);
       enhancedPrompt += contextLines.join("\n");
+    } else {
+      // Vision 데이터가 없을 때도 일반 가이드 추가
+      enhancedPrompt += `\n\n---\n[중요] similarBrands는 단순히 같은 폰트 종류(산세리프 등)를 쓴다는 이유로 무관한 대형 브랜드(UNIQLO, H&M 등)를 나열하지 마세요. **시각적·구조적으로 정말 닮은 브랜드**만 골라서 1~3개만 반환하세요. 닮은 곳이 명확하지 않으면 빈 배열도 OK입니다.`;
     }
 
     const response = await ai.models.generateContent({

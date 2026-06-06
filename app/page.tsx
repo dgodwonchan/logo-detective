@@ -444,7 +444,11 @@ export default function Home() {
             </div>
 
             {/* 웹 출처 분석 (Vision API) */}
-            {result.webDetection && result.webDetection.matchingPages.length > 0 && (
+            {result.webDetection && (
+              result.webDetection.matchingPages.length > 0 ||
+              result.webDetection.similarImages.length > 0 ||
+              result.webDetection.entities.length > 0
+            ) && (
               <div className="rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-6">
                 <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
                   <svg className="h-4 w-4 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -455,70 +459,97 @@ export default function Home() {
                     (Google Vision AI)
                   </span>
                 </h3>
+
+                {/* 관련 키워드 (엔터티) */}
                 {result.webDetection.entities.length > 0 && (
-                  <div className="mt-3 flex flex-wrap gap-1.5">
-                    {result.webDetection.entities.slice(0, 6).map((e, i) => (
-                      <span
-                        key={i}
-                        className="inline-flex items-center rounded-full bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900 px-2.5 py-1 text-xs text-blue-700 dark:text-blue-300"
-                      >
-                        {e.description}
-                      </span>
-                    ))}
+                  <div className="mt-3">
+                    <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-2">
+                      관련 키워드
+                    </p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {result.webDetection.entities.slice(0, 8).map((e, i) => (
+                        <span
+                          key={i}
+                          className="inline-flex items-center rounded-full bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900 px-2.5 py-1 text-xs text-blue-700 dark:text-blue-300"
+                        >
+                          {e.description}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 )}
-                <ul className="mt-4 space-y-2">
-                  {result.webDetection.matchingPages.slice(0, 5).map((page, i) => (
-                    <li key={i} className="flex items-start gap-3 rounded-lg bg-zinc-50 dark:bg-zinc-950/40 px-3 py-2.5">
-                      <div className="shrink-0 h-5 w-5 rounded bg-zinc-200 dark:bg-zinc-800 flex items-center justify-center mt-0.5">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={`https://www.google.com/s2/favicons?sz=32&domain=${new URL(page.url).hostname}`}
-                          alt=""
-                          className="h-4 w-4 rounded-sm"
-                          onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                        />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100 truncate">
-                          {page.pageTitle}
-                        </p>
-                        <a
-                          href={page.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-xs text-blue-600 dark:text-blue-400 hover:underline truncate block"
-                        >
-                          {page.url}
-                        </a>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-                {result.webDetection.similarImages.length > 0 && (
-                  <div className="mt-4">
+
+                {/* 매칭 페이지 */}
+                {result.webDetection.matchingPages.length > 0 && (
+                  <div className="mt-5">
                     <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-2">
-                      시각적으로 유사한 이미지
+                      이 로고가 사용된 웹페이지
                     </p>
-                    <div className="flex gap-2 overflow-x-auto pb-2">
-                      {result.webDetection.similarImages.slice(0, 4).map((url, i) => (
+                    <ul className="space-y-2">
+                      {result.webDetection.matchingPages.slice(0, 5).map((page, i) => (
+                        <li key={i} className="flex items-start gap-3 rounded-lg bg-zinc-50 dark:bg-zinc-950/40 px-3 py-2.5">
+                          <div className="shrink-0 h-5 w-5 rounded bg-zinc-200 dark:bg-zinc-800 flex items-center justify-center mt-0.5">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={`https://www.google.com/s2/favicons?sz=32&domain=${new URL(page.url).hostname}`}
+                              alt=""
+                              className="h-4 w-4 rounded-sm"
+                              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                            />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100 truncate">
+                              {page.pageTitle}
+                            </p>
+                            <a
+                              href={page.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-xs text-blue-600 dark:text-blue-400 hover:underline truncate block"
+                            >
+                              {page.url}
+                            </a>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {/* 시각적으로 유사한 로고 (구글 이미지의 Visual matches처럼) */}
+                {result.webDetection.similarImages.length > 0 && (
+                  <div className="mt-5">
+                    <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-2">
+                      시각적으로 유사한 로고 ({result.webDetection.similarImages.length}건)
+                    </p>
+                    <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
+                      {result.webDetection.similarImages.slice(0, 12).map((url, i) => (
                         <a
                           key={i}
                           href={url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="shrink-0 h-16 w-16 rounded-lg bg-zinc-100 dark:bg-zinc-800 overflow-hidden border border-zinc-200 dark:border-zinc-700 hover:ring-2 hover:ring-blue-400 transition"
+                          className="aspect-square rounded-lg bg-zinc-100 dark:bg-zinc-800 overflow-hidden border border-zinc-200 dark:border-zinc-700 hover:ring-2 hover:ring-blue-400 transition group relative"
                         >
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             src={url}
-                            alt={`유사 이미지 ${i + 1}`}
-                            className="h-full w-full object-cover"
+                            alt={`유사 로고 ${i + 1}`}
+                            className="h-full w-full object-contain bg-white dark:bg-zinc-900"
+                            referrerPolicy="no-referrer"
                             onError={(e) => { (e.target as HTMLImageElement).parentElement!.style.display = 'none'; }}
                           />
+                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition flex items-center justify-center">
+                            <svg className="h-5 w-5 text-white opacity-0 group-hover:opacity-100 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            </svg>
+                          </div>
                         </a>
                       ))}
                     </div>
+                    <p className="mt-2 text-xs text-zinc-400 dark:text-zinc-500">
+                      이미지 클릭 시 원본 페이지로 이동
+                    </p>
                   </div>
                 )}
               </div>

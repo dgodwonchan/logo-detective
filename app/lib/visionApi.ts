@@ -51,7 +51,7 @@ export async function detectWeb(base64Data: string): Promise<WebDetectionParsed 
       {
         image: { content: base64Data },
         features: [
-          { type: "WEB_DETECTION", maxResults: 10 },
+          { type: "WEB_DETECTION", maxResults: 30 },
         ],
       },
     ],
@@ -97,7 +97,7 @@ export async function detectWeb(base64Data: string): Promise<WebDetectionParsed 
     const similarImages = (webDetection.visuallySimilarImages || [])
       .map((i) => i.url)
       .filter(Boolean)
-      .slice(0, 6);
+      .slice(0, 18);
 
     const bestGuessLabels = (webDetection.bestGuessLabels || [])
       .map((l) => l.label)
