@@ -154,42 +154,21 @@ export default function CameraCapture({ onCapture, onClose }: Props) {
         </button>
       </div>
 
-      {/* 비디오 영역 */}
-      <div className="flex-1 flex items-center justify-center px-4 overflow-hidden">
+      {/* 비디오 영역 — 전체 화면 활용 */}
+      <div className="flex-1 flex items-center justify-center px-0 overflow-hidden">
         {error ? (
           <div className="max-w-md text-center text-white/90 space-y-4">
             <div className="mx-auto h-14 w-14 rounded-full bg-rose-500/20 flex items-center justify-center">
-              <svg
-                className="h-7 w-7 text-rose-400"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth={2}
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 9v2m0 4h.01M4.93 19h14.14a2 2 0 001.74-3L13.74 4a2 2 0 00-3.48 0L3.19 16a2 2 0 001.74 3z"
-                />
+              <svg className="h-7 w-7 text-rose-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M4.93 19h14.14a2 2 0 001.74-3L13.74 4a2 2 0 00-3.48 0L3.19 16a2 2 0 001.74 3z" />
               </svg>
             </div>
             <p className="text-base leading-relaxed">{error}</p>
-            <button
-              onClick={onClose}
-              className="rounded-full bg-white/10 px-5 py-2 text-sm font-medium hover:bg-white/20 transition"
-            >
-              닫기
-            </button>
+            <button onClick={onClose} className="rounded-full bg-white/10 px-5 py-2 text-sm font-medium hover:bg-white/20 transition">닫기</button>
           </div>
         ) : (
-          <div className="relative w-full max-w-3xl aspect-video bg-black rounded-2xl overflow-hidden">
-            <video
-              ref={videoRef}
-              autoPlay
-              playsInline
-              muted
-              className="h-full w-full object-contain"
-            />
+          <div className="relative w-full h-full bg-black">
+            <video ref={videoRef} autoPlay playsInline muted className="h-full w-full object-cover" />
             {!ready && (
               <div className="absolute inset-0 flex items-center justify-center text-white/60 text-sm">
                 <div className="flex items-center gap-2">
@@ -198,10 +177,10 @@ export default function CameraCapture({ onCapture, onClose }: Props) {
                 </div>
               </div>
             )}
-            {/* 가이드 프레임 */}
+            {/* 가이드 프레임 — 중앙 정사각형 */}
             {ready && (
-              <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                <div className="h-3/4 aspect-square border-2 border-white/30 rounded-2xl" />
+              <div className="pointer-events-none absolute inset-0 flex items-center justify-center px-6">
+                <div className="w-full max-w-[min(75vw,75vh)] aspect-square border-2 border-white/30 rounded-2xl shadow-[inset_0_0_0_2000px_rgba(0,0,0,0.25)]" />
               </div>
             )}
           </div>

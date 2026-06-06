@@ -164,7 +164,7 @@ export default function Home() {
 
           {/* 우측: 소셜 + 사용량 + 새로 시작 */}
           <div className="flex items-center gap-1.5 shrink-0">
-            {/* 소셜 아이콘 (작게) */}
+            {/* 소셜 아이콘 (해당 sm 이상만) */}
             <nav className="hidden sm:flex items-center gap-0.5" aria-label="소셜 채널">
               <a href="https://www.youtube.com/@wonchan" target="_blank" rel="noopener noreferrer"
                 className="h-7 w-7 sm:h-8 sm:w-8 rounded-full flex items-center justify-center text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 transition">
@@ -589,22 +589,37 @@ export default function Home() {
                   {result.similarBrands.map((b, i) => (
                     <li
                       key={i}
-                      className="rounded-xl border border-zinc-200 dark:border-zinc-800 p-4 bg-zinc-50/50 dark:bg-zinc-950/40"
+                      className="rounded-xl border border-zinc-200 dark:border-zinc-800 p-3 sm:p-4 bg-zinc-50/50 dark:bg-zinc-950/40"
                     >
-                      <div className="flex items-start sm:items-center gap-3 sm:gap-4">
-                        <div className="shrink-0">
+                      <div className="flex gap-3 sm:gap-4">
+                        {/* 좌측: 로고 + 유사도 */}
+                        <div className="shrink-0 flex flex-col items-center gap-1.5 pt-0.5">
                           <BrandLogo url={b.officialUrl} name={b.name} />
+                          <div className="text-center">
+                            <div className="text-lg sm:text-xl font-bold text-zinc-900 dark:text-zinc-100 leading-none">
+                              {Math.round(b.similarityScore)}
+                              <span className="text-[10px] sm:text-xs font-medium text-zinc-500 dark:text-zinc-400">%</span>
+                            </div>
+                            <div className="mt-1 h-1 w-14 sm:w-16 rounded-full bg-zinc-200 dark:bg-zinc-800 overflow-hidden">
+                              <div
+                                className="h-full bg-indigo-500"
+                                style={{ width: `${Math.min(100, Math.max(0, b.similarityScore))}%` }}
+                              />
+                            </div>
+                          </div>
                         </div>
+
+                        {/* 우측: 설명 영역 */}
                         <div className="min-w-0 flex-1">
                           <div className="flex items-center gap-2 flex-wrap">
                             <h4 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
                               {b.name}
                             </h4>
-                            <span className="text-xs text-zinc-500 dark:text-zinc-400 break-keep">
+                            <span className="text-[11px] sm:text-xs text-zinc-500 dark:text-zinc-400 break-keep">
                               {b.industry} · {b.country} · {b.foundedYear}
                             </span>
                           </div>
-                          <p className="mt-1.5 text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed break-keep">
+                          <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-300 leading-relaxed break-keep">
                             {b.reasonForSimilarity}
                           </p>
                           {b.officialUrl && (
@@ -612,43 +627,14 @@ export default function Home() {
                               href={b.officialUrl}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:underline break-all"
+                              className="mt-1.5 inline-flex items-center gap-1 text-[11px] sm:text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:underline break-all"
                             >
                               {b.officialUrl}
-                              <svg
-                                className="h-3 w-3 shrink-0"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                                strokeWidth={2}
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                                />
+                              <svg className="h-3 w-3 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                               </svg>
                             </a>
                           )}
-                        </div>
-                        <div className="shrink-0 text-right">
-                          <div className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
-                            {Math.round(b.similarityScore)}
-                            <span className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
-                              %
-                            </span>
-                          </div>
-                          <div className="mt-1 h-1.5 w-20 sm:w-24 rounded-full bg-zinc-200 dark:bg-zinc-800 overflow-hidden">
-                            <div
-                              className="h-full bg-indigo-500"
-                              style={{
-                                width: `${Math.min(
-                                  100,
-                                  Math.max(0, b.similarityScore)
-                                )}%`,
-                              }}
-                            />
-                          </div>
                         </div>
                       </div>
                     </li>
@@ -732,23 +718,29 @@ export default function Home() {
 
       <footer className="border-t border-zinc-200 dark:border-zinc-800 mt-8">
         <div className="mx-auto max-w-5xl px-6 py-6 flex flex-col items-center gap-4">
+          {/* SNS 아이콘 (모바일에서도 여기서 보임) */}
+          <nav className="flex items-center gap-3" aria-label="소셜 채널">
+            <a href="https://www.youtube.com/@wonchan" target="_blank" rel="noopener noreferrer"
+              className="h-9 w-9 rounded-full flex items-center justify-center text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 transition bg-zinc-100 dark:bg-zinc-800">
+              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" /></svg>
+            </a>
+            <a href="https://www.instagram.com/dgodwonchan" target="_blank" rel="noopener noreferrer"
+              className="h-9 w-9 rounded-full flex items-center justify-center text-pink-500 hover:bg-pink-50 dark:hover:bg-pink-950/40 transition bg-zinc-100 dark:bg-zinc-800">
+              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></svg>
+            </a>
+            <a href="http://minimalist.kr/" target="_blank" rel="noopener noreferrer"
+              className="h-9 w-9 rounded-full flex items-center justify-center text-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 transition bg-zinc-100 dark:bg-zinc-800">
+              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3" /></svg>
+            </a>
+          </nav>
+
           <div className="text-xs text-zinc-500 dark:text-zinc-400 text-center space-y-1">
             <p>
               Made by{" "}
-              <a
-                href="https://www.youtube.com/@wonchan"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-medium text-zinc-700 dark:text-zinc-300 hover:underline"
-              >
-                디고디원찬
-              </a>{" "}
+              <a href="https://www.youtube.com/@wonchan" target="_blank" rel="noopener noreferrer" className="font-medium text-zinc-700 dark:text-zinc-300 hover:underline">디고디원찬</a>{" "}
               · 디자이너의 고민을 들어주는 디자이너
             </p>
-            <p>
-              ⚠️ AI 분석 결과는 참고용입니다. 표절 여부에 대한 법적 판단은
-              전문가 의뢰가 필요합니다.
-            </p>
+            <p>⚠️ AI 분석 결과는 참고용입니다. 표절 여부에 대한 법적 판단은 전문가 의뢰가 필요합니다.</p>
           </div>
         </div>
       </footer>
