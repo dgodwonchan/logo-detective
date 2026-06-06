@@ -317,6 +317,11 @@ export default function Home() {
               <p className="text-base font-medium text-zinc-900 dark:text-zinc-100">
                 {file ? "다른 이미지로 교체하려면 클릭하세요" : "로고 이미지를 끌어다 놓거나 클릭해서 선택하세요"}
               </p>
+              {!file && (
+                <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+                  이미지 권장 크기: 가로 500px 이상
+                </p>
+              )}
               <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
                 PNG · JPG · WebP · 최대 10MB
               </p>
