@@ -152,48 +152,98 @@ export default function Home() {
               </p>
             </div>
           </div>
-          {(file || result) && (
-            <button
-              onClick={onReset}
-              className="text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition"
-            >
-              새로 시작
-            </button>
-          )}
-          {!file && !result && limitStatus && (
-            <button
-              onClick={() => {
-                if (limitStatus.unlocked || limitStatus.allowed) {
-                  setDonateReason("voluntary");
-                } else {
-                  setDonateReason("limit");
-                }
-                setDonateOpen(true);
-              }}
-              className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 dark:border-zinc-700 bg-white/60 dark:bg-zinc-900/60 px-3 py-1.5 text-xs font-medium text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition"
-              aria-label="사용량 / 후원하기"
-            >
-              {limitStatus.unlocked ? (
-                <>
-                  <span aria-hidden>♾️</span>
-                  <span className="hidden sm:inline">24시간 무제한</span>
-                  <span className="sm:hidden">무제한</span>
-                </>
-              ) : (
-                <>
-                  <span aria-hidden>☕</span>
-                  <span className="hidden sm:inline">
-                    오늘 {limitStatus.limit - limitStatus.remaining}/
-                    {limitStatus.limit}회 사용
-                  </span>
-                  <span className="sm:hidden">
-                    {limitStatus.limit - limitStatus.remaining}/
-                    {limitStatus.limit}
-                  </span>
-                </>
-              )}
-            </button>
-          )}
+          <div className="flex items-center gap-2">
+            {/* 소셜 아이콘 */}
+            <nav className="flex items-center gap-1" aria-label="소셜 채널">
+              <a
+                href="https://www.youtube.com/@wonchan"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="디고디원찬 유튜브"
+                className="h-8 w-8 rounded-full flex items-center justify-center text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 transition"
+              >
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                </svg>
+              </a>
+              <a
+                href="https://www.instagram.com/dgodwonchan"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="디고디원찬 인스타그램"
+                className="h-8 w-8 rounded-full flex items-center justify-center text-pink-500 hover:bg-pink-50 dark:hover:bg-pink-950/40 transition"
+              >
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+                </svg>
+              </a>
+              <a
+                href="http://minimalist.kr/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="미니멀리스트 스튜디오"
+                className="h-8 w-8 rounded-full flex items-center justify-center text-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 transition"
+              >
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
+                </svg>
+              </a>
+            </nav>
+
+            {/* 사용량 뱃지 */}
+            {limitStatus && (
+              <button
+                onClick={() => {
+                  if (limitStatus.unlocked || limitStatus.allowed) {
+                    setDonateReason("voluntary");
+                  } else {
+                    setDonateReason("limit");
+                  }
+                  setDonateOpen(true);
+                }}
+                className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 dark:border-zinc-700 bg-white/60 dark:bg-zinc-900/60 px-3 py-1.5 text-xs font-medium text-zinc-600 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition"
+                aria-label="사용량 / 후원하기"
+              >
+                {limitStatus.unlocked ? (
+                  <>
+                    <span aria-hidden>♾️</span>
+                    <span className="hidden sm:inline">24시간 무제한</span>
+                    <span className="sm:hidden">무제한</span>
+                  </>
+                ) : (
+                  <>
+                    <span aria-hidden>☕</span>
+                    <span className="hidden sm:inline">
+                      오늘 {limitStatus.limit - limitStatus.remaining}/
+                      {limitStatus.limit}회 사용
+                    </span>
+                    <span className="sm:hidden">
+                      {limitStatus.limit - limitStatus.remaining}/
+                      {limitStatus.limit}
+                    </span>
+                  </>
+                )}
+              </button>
+            )}
+
+            {/* 새로 시작 버튼 */}
+            {(file || result) && (
+              <button
+                onClick={onReset}
+                className="inline-flex items-center gap-1.5 rounded-full bg-zinc-900 dark:bg-white px-4 py-1.5 text-xs font-semibold text-white dark:text-zinc-900 hover:bg-zinc-700 dark:hover:bg-zinc-200 transition shadow-sm"
+              >
+                <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <polyline points="1 4 1 10 7 10" />
+                  <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+                </svg>
+                새로 시작
+              </button>
+            )}
+          </div>
         </div>
       </header>
 
@@ -556,50 +606,6 @@ export default function Home() {
 
       <footer className="border-t border-zinc-200 dark:border-zinc-800 mt-8">
         <div className="mx-auto max-w-5xl px-6 py-6 flex flex-col items-center gap-4">
-          {/* 소셜 링크 */}
-          <nav className="flex items-center gap-2" aria-label="소셜 채널">
-            <a
-              href="https://www.youtube.com/@wonchan"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="디고디원찬 유튜브"
-              className="h-9 w-9 rounded-full flex items-center justify-center text-zinc-500 hover:text-rose-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-rose-400 dark:hover:bg-zinc-800 transition"
-            >
-              {/* YouTube */}
-              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
-              </svg>
-            </a>
-            <a
-              href="https://www.instagram.com/dgodwonchan"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="디고디원찬 인스타그램"
-              className="h-9 w-9 rounded-full flex items-center justify-center text-zinc-500 hover:text-pink-600 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-pink-400 dark:hover:bg-zinc-800 transition"
-            >
-              {/* Instagram */}
-              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-              </svg>
-            </a>
-            <a
-              href="http://minimalist.kr/"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="미니멀리스트 스튜디오"
-              className="h-9 w-9 rounded-full flex items-center justify-center text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-zinc-100 dark:hover:bg-zinc-800 transition"
-            >
-              {/* Minimalist (외부 링크 아이콘) */}
-              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6" />
-                <polyline points="15 3 21 3 21 9" />
-                <line x1="10" y1="14" x2="21" y2="3" />
-              </svg>
-            </a>
-          </nav>
-
           <div className="text-xs text-zinc-500 dark:text-zinc-400 text-center space-y-1">
             <p>
               Made by{" "}
