@@ -438,6 +438,87 @@ export default function Home() {
               </div>
             </div>
 
+            {/* 웹 출처 분석 (Vision API) */}
+            {result.webDetection && result.webDetection.matchingPages.length > 0 && (
+              <div className="rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-6">
+                <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                  <svg className="h-4 w-4 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                  웹 출처 분석
+                  <span className="text-xs font-normal text-zinc-500 dark:text-zinc-400">
+                    (Google Vision AI)
+                  </span>
+                </h3>
+                {result.webDetection.entities.length > 0 && (
+                  <div className="mt-3 flex flex-wrap gap-1.5">
+                    {result.webDetection.entities.slice(0, 6).map((e, i) => (
+                      <span
+                        key={i}
+                        className="inline-flex items-center rounded-full bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900 px-2.5 py-1 text-xs text-blue-700 dark:text-blue-300"
+                      >
+                        {e.description}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                <ul className="mt-4 space-y-2">
+                  {result.webDetection.matchingPages.slice(0, 5).map((page, i) => (
+                    <li key={i} className="flex items-start gap-3 rounded-lg bg-zinc-50 dark:bg-zinc-950/40 px-3 py-2.5">
+                      <div className="shrink-0 h-5 w-5 rounded bg-zinc-200 dark:bg-zinc-800 flex items-center justify-center mt-0.5">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={`https://www.google.com/s2/favicons?sz=32&domain=${new URL(page.url).hostname}`}
+                          alt=""
+                          className="h-4 w-4 rounded-sm"
+                          onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                        />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-medium text-zinc-900 dark:text-zinc-100 truncate">
+                          {page.pageTitle}
+                        </p>
+                        <a
+                          href={page.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs text-blue-600 dark:text-blue-400 hover:underline truncate block"
+                        >
+                          {page.url}
+                        </a>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+                {result.webDetection.similarImages.length > 0 && (
+                  <div className="mt-4">
+                    <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-2">
+                      시각적으로 유사한 이미지
+                    </p>
+                    <div className="flex gap-2 overflow-x-auto pb-2">
+                      {result.webDetection.similarImages.slice(0, 4).map((url, i) => (
+                        <a
+                          key={i}
+                          href={url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="shrink-0 h-16 w-16 rounded-lg bg-zinc-100 dark:bg-zinc-800 overflow-hidden border border-zinc-200 dark:border-zinc-700 hover:ring-2 hover:ring-blue-400 transition"
+                        >
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={url}
+                            alt={`유사 이미지 ${i + 1}`}
+                            className="h-full w-full object-cover"
+                            onError={(e) => { (e.target as HTMLImageElement).parentElement!.style.display = 'none'; }}
+                          />
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* 디자인 요소 분해 */}
             <div className="rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-6">
               <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">

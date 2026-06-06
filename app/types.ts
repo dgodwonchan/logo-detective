@@ -18,12 +18,32 @@ export interface DesignElements {
   typography: string; // 타이포 특성
 }
 
+// Vision API Web Detection 결과
+export interface WebSource {
+  url: string;
+  pageTitle: string;
+  imageUrl?: string;
+}
+
+export interface WebEntity {
+  entityId?: string;
+  description: string;
+  score: number;
+}
+
+export interface WebDetectionResult {
+  entities: WebEntity[];
+  matchingPages: WebSource[];
+  similarImages: string[]; // URL 목록
+}
+
 export interface AnalysisResult {
   riskLevel: RiskLevel;
   riskReason: string;
   designElements: DesignElements;
   similarBrands: SimilarBrand[];
   educationalFeedback: string;
+  webDetection?: WebDetectionResult; // Vision API 결과 (optional)
 }
 
 // 사용량 / 잠금 상태 (서버 → 클라이언트)

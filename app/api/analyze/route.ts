@@ -1,6 +1,7 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { NextRequest } from "next/server";
 import { consume, getClientIp, getStatus } from "@/app/lib/rateLimiter";
+import { detectWeb } from "@/app/lib/visionApi";
 
 export const runtime = "nodejs";
 // 분석은 시간이 걸릴 수 있으므로 Vercel 배포 시에도 60초까지 허용
@@ -164,6 +165,41 @@ export async function POST(request: NextRequest) {
 
     const ai = new GoogleGenAI({ apiKey });
 
+    // Vision API와 Gemini를 병렬 호출 (속도 최적화)
+    const visionPromise = detectWeb(base64Data);
+
+    // Vision 결과를 먼저 기다려서 Gemini 프롬프트에 반영
+    const webResult = await visionPromise;
+
+    // Vision API 결과가 있으면 Gemini 프롬프트에 추가 컨텍스트 제공
+    let enhancedPrompt = ANALYSIS_PROMPT;
+    if (webResult && (webResult.matchingPages.length > 0 || webResult.entities.length > 0)) {
+      const contextLines: string[] = [
+        "\n\n---\n[참고: 구글 웹 검색으로 이 로고의 실제 출처를 찾았습니다. 아래 정보를 분석에 활용하세요.]",
+      ];
+
+      if (webResult.bestGuessLabels.length > 0) {
+        contextLines.push(`\n추정 브랜드명: ${webResult.bestGuessLabels.join(", ")}`);
+      }
+
+      if (webResult.entities.length > 0) {
+        contextLines.push(`\n관련 엔터티:`);
+        webResult.entities.slice(0, 5).forEach((e) => {
+          contextLines.push(`- ${e.description} (신뢰도: ${e.score})`);
+        });
+      }
+
+      if (webResult.matchingPages.length > 0) {
+        contextLines.push(`\n이 로고가 사용된 웹페이지:`);
+        webResult.matchingPages.slice(0, 5).forEach((p) => {
+          contextLines.push(`- ${p.pageTitle}: ${p.url}`);
+        });
+      }
+
+      contextLines.push(`\n위 정보가 있으면 유사 브랜드 검색에서 정확한 출처 브랜드를 최상위에 포함시키세요. URL도 실제 URL을 사용하세요.`);
+      enhancedPrompt += contextLines.join("\n");
+    }
+
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
       contents: [
@@ -176,7 +212,7 @@ export async function POST(request: NextRequest) {
                 data: base64Data,
               },
             },
-            { text: ANALYSIS_PROMPT },
+            { text: enhancedPrompt },
           ],
         },
       ],
@@ -215,7 +251,17 @@ export async function POST(request: NextRequest) {
 
     // 분석 성공 시 카운트 소비 + 응답에 잔여 횟수 포함
     const postStatus = consume(ip);
-    return Response.json({ ...parsed, limitStatus: postStatus });
+
+    // Vision API Web Detection 결과 포함
+    const webDetection = webResult
+      ? {
+          entities: webResult.entities,
+          matchingPages: webResult.matchingPages,
+          similarImages: webResult.similarImages,
+        }
+      : undefined;
+
+    return Response.json({ ...parsed, webDetection, limitStatus: postStatus });
   } catch (error) {
     console.error("[/api/analyze] error:", error);
     const raw = error instanceof Error ? error.message : String(error);
