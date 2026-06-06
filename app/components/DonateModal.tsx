@@ -22,7 +22,7 @@ const METHODS: {
   {
     id: "kakao",
     label: "카카오페이",
-    qr: "/donate-kakao.jpg",
+    qr: "/donate-kakao.png",
     color: "bg-[#FFE812] hover:bg-[#f0d800]",
     textColor: "text-zinc-900",
   },

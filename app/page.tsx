@@ -261,6 +261,29 @@ export default function Home() {
               </p>
             </div>
 
+            {/* 미리보기 + 분석 버튼 (이미지 첨부 시 상단 노출) */}
+            {file && previewUrl && (
+              <div className="mx-auto max-w-md rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-4 space-y-4">
+                <div className="aspect-square rounded-xl bg-zinc-100 dark:bg-zinc-800 overflow-hidden flex items-center justify-center">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={previewUrl}
+                    alt="업로드한 로고"
+                    className="max-h-full max-w-full object-contain"
+                  />
+                </div>
+                <div className="text-xs text-zinc-500 dark:text-zinc-400 truncate">
+                  {file.name} · {(file.size / 1024).toFixed(1)} KB
+                </div>
+                <button
+                  onClick={onAnalyze}
+                  className="w-full rounded-xl bg-zinc-900 dark:bg-white py-3 text-sm font-semibold text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100 transition"
+                >
+                  분석 시작
+                </button>
+              </div>
+            )}
+
             <label
               htmlFor="logo-upload"
               onDragOver={(e) => {
@@ -292,7 +315,7 @@ export default function Home() {
                 </svg>
               </div>
               <p className="text-base font-medium text-zinc-900 dark:text-zinc-100">
-                로고 이미지를 끌어다 놓거나 클릭해서 선택하세요
+                {file ? "다른 이미지로 교체하려면 클릭하세요" : "로고 이미지를 끌어다 놓거나 클릭해서 선택하세요"}
               </p>
               <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
                 PNG · JPG · WebP · 최대 10MB
@@ -308,6 +331,7 @@ export default function Home() {
             </label>
 
             {/* 카메라 촬영 버튼 (모든 디바이스) */}
+            {!file && (
             <div className="flex justify-center">
               <button
                 onClick={() => setShowCamera(true)}
@@ -330,33 +354,11 @@ export default function Home() {
                 카메라로 촬영
               </button>
             </div>
+            )}
 
             {status === "error" && errorMsg && (
               <div className="mx-auto max-w-2xl rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 px-4 py-3 text-sm text-rose-700 dark:text-rose-300">
                 {errorMsg}
-              </div>
-            )}
-
-            {/* 미리보기 + 분석 버튼 */}
-            {file && previewUrl && (
-              <div className="mx-auto max-w-md rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-4 space-y-4">
-                <div className="aspect-square rounded-xl bg-zinc-100 dark:bg-zinc-800 overflow-hidden flex items-center justify-center">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={previewUrl}
-                    alt="업로드한 로고"
-                    className="max-h-full max-w-full object-contain"
-                  />
-                </div>
-                <div className="text-xs text-zinc-500 dark:text-zinc-400 truncate">
-                  {file.name} · {(file.size / 1024).toFixed(1)} KB
-                </div>
-                <button
-                  onClick={onAnalyze}
-                  className="w-full rounded-xl bg-zinc-900 dark:bg-white py-3 text-sm font-semibold text-white dark:text-zinc-900 hover:bg-zinc-800 dark:hover:bg-zinc-100 transition"
-                >
-                  분석 시작
-                </button>
               </div>
             )}
           </section>
