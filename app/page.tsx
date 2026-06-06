@@ -427,7 +427,7 @@ export default function Home() {
                 } ${RISK_META[result.riskLevel].ring}`}
               >
                 <div className="flex items-center gap-2 text-sm font-medium text-zinc-600 dark:text-zinc-400">
-                  표절 위험 등급
+                  📌 표절 위험 등급
                 </div>
                 <div
                   className={`mt-2 flex items-center gap-3 text-3xl font-bold ${
@@ -451,10 +451,7 @@ export default function Home() {
             ) && (
               <div className="rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-6">
                 <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-                  <svg className="h-4 w-4 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                  웹 출처 분석
+                  🔎 웹 출처 분석
                   <span className="text-xs font-normal text-zinc-500 dark:text-zinc-400">
                     (Google Vision AI)
                   </span>
@@ -558,7 +555,7 @@ export default function Home() {
             {/* 디자인 요소 분해 */}
             <div className="rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-6">
               <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
-                디자인 요소 분석
+                🎨 디자인 요소 분석
               </h3>
               <div className="mt-4 grid gap-4 sm:grid-cols-3">
                 <div>
@@ -598,7 +595,7 @@ export default function Home() {
             {/* 유사 브랜드 Top 5 */}
             <div className="rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 p-6">
               <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100">
-                유사한 실제 브랜드 Top {result.similarBrands.length}
+                🔗 유사한 실제 브랜드 Top {result.similarBrands.length}
               </h3>
               {result.similarBrands.length === 0 ? (
                 <p className="mt-3 text-sm text-zinc-500 dark:text-zinc-400">
@@ -676,27 +673,53 @@ export default function Home() {
               )}
             </div>
 
-            {/* 디자인 피드백 */}
+            {/* 디자인 피드백 (4개 섹션 구조) */}
             <div className="rounded-2xl bg-gradient-to-br from-indigo-50 to-violet-50 dark:from-indigo-950/40 dark:to-violet-950/40 border border-indigo-100 dark:border-indigo-900 p-6">
               <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-                <svg
-                  className="h-4 w-4 text-indigo-600 dark:text-indigo-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-                  />
-                </svg>
-                디자인 피드백
+                💡 디자인 피드백
               </h3>
-              <p className="mt-3 text-sm leading-relaxed text-zinc-700 dark:text-zinc-300 whitespace-pre-line">
-                {result.educationalFeedback}
-              </p>
+              {(() => {
+                const fb = result.educationalFeedback;
+                // 구버전 호환: string인 경우 overall에 통째로 표시
+                if (typeof fb === "string") {
+                  return (
+                    <p className="mt-3 text-sm leading-relaxed text-zinc-700 dark:text-zinc-300 whitespace-pre-line">
+                      {fb}
+                    </p>
+                  );
+                }
+                // 신버전: 4개 섹션
+                const sections: {
+                  key: keyof typeof fb;
+                  label: string;
+                  emoji: string;
+                  bg: string;
+                  border: string;
+                }[] = [
+                  { key: "overall", label: "Overall", emoji: "🌐", bg: "bg-white/70 dark:bg-zinc-900/40", border: "border-indigo-200 dark:border-indigo-900" },
+                  { key: "pros", label: "장점", emoji: "👍", bg: "bg-emerald-50/80 dark:bg-emerald-950/30", border: "border-emerald-200 dark:border-emerald-900" },
+                  { key: "cautions", label: "주의점", emoji: "⚠️", bg: "bg-amber-50/80 dark:bg-amber-950/30", border: "border-amber-200 dark:border-amber-900" },
+                  { key: "improvements", label: "개선점", emoji: "🛠", bg: "bg-blue-50/80 dark:bg-blue-950/30", border: "border-blue-200 dark:border-blue-900" },
+                ];
+                return (
+                  <div className="mt-4 space-y-3">
+                    {sections.map((s) => (
+                      <div
+                        key={s.key}
+                        className={`rounded-xl border p-4 ${s.bg} ${s.border}`}
+                      >
+                        <div className="text-xs font-semibold text-zinc-700 dark:text-zinc-300 mb-1.5 flex items-center gap-1.5">
+                          <span aria-hidden>{s.emoji}</span>
+                          <span>{s.label}</span>
+                        </div>
+                        <p className="text-sm leading-relaxed text-zinc-700 dark:text-zinc-300 whitespace-pre-line">
+                          {fb[s.key]}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                );
+              })()}
             </div>
 
             {/* DIAD / Coloso 클래스 배너 */}

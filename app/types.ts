@@ -37,12 +37,19 @@ export interface WebDetectionResult {
   similarImages: string[]; // URL 목록
 }
 
+export interface DesignFeedback {
+  overall: string;      // 전반적 평가
+  pros: string;         // 장점
+  cautions: string;     // 주의점
+  improvements: string; // 개선점
+}
+
 export interface AnalysisResult {
   riskLevel: RiskLevel;
   riskReason: string;
   designElements: DesignElements;
   similarBrands: SimilarBrand[];
-  educationalFeedback: string;
+  educationalFeedback: string | DesignFeedback; // 구버전(string) 호환 + 신버전(structured)
   webDetection?: WebDetectionResult; // Vision API 결과 (optional)
 }
 

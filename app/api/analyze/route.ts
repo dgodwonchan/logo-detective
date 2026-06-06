@@ -29,10 +29,13 @@ const ANALYSIS_PROMPT = `당신은 글로벌 브랜드 아이덴티티와 로고
    - shape: 형태/심볼의 특징을 한 문장으로
    - typography: 타이포그래피의 특성 (있는 경우, 없으면 "텍스트 없음")
 
-4. **디자인 피드백**
-   - 브랜딩 전문가가 디자이너에게 줄 법한 건설적 코멘트를 3-5문장으로 작성하세요.
-   - 어떤 부분을 차별화해야 독창성이 살아날지, 어떤 디자인 결정이 좋았는지 균형 있게 평가하세요.
-   - 한국어로 작성하세요.
+4. **디자인 피드백** (4개 섹션 구조)
+   - **overall** (전반적 평가): 이 로고에 대한 종합적 첫인상과 핵심 평가를 명확히 제시. 약 200자.
+   - **pros** (장점): 잘 된 디자인 결정과 강점을 구체적으로 짚어주기. 약 200자.
+   - **cautions** (주의점): 표절 위험 요소나 시장에서 혼동될 만한 부분을 솔직하게 지적. 약 250자.
+   - **improvements** (개선점): 구체적이고 실행 가능한 개선 방향. 약 350자.
+   - **각 섹션은 한국어로 작성하고, 4개 섹션 합쳐서 공백 포함 약 1,000자가 되도록 하세요.**
+   - 디자이너에게 실질적으로 도움 되는 전문가 코멘트로 작성하세요.
 
 응답은 반드시 지정된 JSON 스키마를 따라야 합니다. 모든 텍스트 필드는 한국어로 작성하세요.`;
 
@@ -90,7 +93,17 @@ const responseSchema = {
         ],
       },
     },
-    educationalFeedback: { type: Type.STRING },
+    educationalFeedback: {
+      type: Type.OBJECT,
+      properties: {
+        overall: { type: Type.STRING },
+        pros: { type: Type.STRING },
+        cautions: { type: Type.STRING },
+        improvements: { type: Type.STRING },
+      },
+      required: ["overall", "pros", "cautions", "improvements"],
+      propertyOrdering: ["overall", "pros", "cautions", "improvements"],
+    },
   },
   required: [
     "riskLevel",
