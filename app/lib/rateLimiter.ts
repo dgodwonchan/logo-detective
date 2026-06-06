@@ -8,7 +8,7 @@
  *   현재는 dev 및 단일 인스턴스 환경 가정.
  */
 
-const FREE_LIMIT = 3;
+const FREE_LIMIT = 5;
 const UNLOCK_DURATION_MS = 24 * 60 * 60 * 1000; // 24h
 
 type Entry = {

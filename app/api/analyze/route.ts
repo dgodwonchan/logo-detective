@@ -114,7 +114,7 @@ export async function POST(request: NextRequest) {
   if (!preStatus.allowed) {
     return Response.json(
       {
-        error: "오늘의 무료 분석 횟수(3회)를 모두 사용하셨어요. ☕ 커피 한 잔 후원해주시면 24시간 무제한으로 이용하실 수 있습니다.",
+        error: "오늘의 무료 분석 횟수(5회)를 모두 사용하셨어요. ☕ 커피 한 잔 후원해주시면 24시간 무제한으로 이용하실 수 있습니다.",
         rateLimited: true,
         limitStatus: preStatus,
       },

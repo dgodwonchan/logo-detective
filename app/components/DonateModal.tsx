@@ -94,7 +94,7 @@ export default function DonateModal({
               </h2>
               <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
                 {reason === "limit"
-                  ? "오늘의 무료 분석 3회를 모두 사용하셨습니다. AI 분석 비용을 충당할 수 있도록 도와주시면, 24시간 동안 무제한으로 이용하실 수 있습니다."
+                  ? "오늘의 무료 분석 5회를 모두 사용하셨습니다. AI 분석 서버 비용을 충당할 수 있도록 도와주시면, 24시간 동안 무제한으로 이용하실 수 있습니다.(후원 금액 자유)"
                   : "Logo Detective는 무료로 운영됩니다. 도움이 되셨다면 커피 한 잔으로 응원해 주세요."}
               </p>
             </div>
