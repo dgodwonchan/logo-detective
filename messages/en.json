@@ -1,0 +1,97 @@
+{
+  "metadata": {
+    "title": "Logo Detective by dgodwonchan — Logo Plagiarism Detection Tool",
+    "description": "Upload your logo and let AI find similar existing brands, assess plagiarism risk, and provide design feedback."
+  },
+  "header": {
+    "title": "Logo Detective",
+    "by": "by dgodwonchan",
+    "subtitle": "Logo Plagiarism Detection Tool"
+  },
+  "hero": {
+    "title": "Does this logo look familiar?",
+    "description": "Upload your logo and AI will find similar real-world brands, assess plagiarism risk, and give you professional design feedback."
+  },
+  "upload": {
+    "replace": "Click to replace with another image",
+    "drop": "Drag and drop your logo or click to select",
+    "recommendedSize": "Recommended: min 500px width",
+    "formats": "PNG · JPG · WebP · Max 10MB",
+    "camera": "Take a photo",
+    "startAnalysis": "Start Analysis",
+    "uploaded": "Uploaded logo",
+    "fileInfo": "{name} · {size} KB"
+  },
+  "analyzing": {
+    "title": "AI is analyzing your logo",
+    "subtitle": "This usually takes 10–30 seconds. Please wait a moment.",
+    "steps": [
+      "Extracting shape, color, and typography",
+      "Matching with global brand database",
+      "Evaluating plagiarism risk and generating report"
+    ]
+  },
+  "result": {
+    "riskLevel": "Plagiarism Risk Level",
+    "safe": "Safe",
+    "caution": "Caution",
+    "danger": "Danger",
+    "webDetection": "Web Source Analysis",
+    "webDetectionSubtitle": "(Google Vision AI)",
+    "keywords": "Related Keywords",
+    "matchingPages": "Webpages where this logo appears",
+    "similarImages": "Visually similar logos ({count})",
+    "clickToOpen": "Click image to open original page",
+    "designElements": "Design Element Analysis",
+    "colors": "Colors",
+    "shape": "Shape",
+    "typography": "Typography",
+    "similarBrands": "Top {count} Similar Real Brands",
+    "noSimilarBrands": "No significantly similar brands were found. Your design is likely original.",
+    "designFeedback": "Design Feedback",
+    "overall": "Overall",
+    "pros": "Strengths",
+    "cautions": "Cautions",
+    "improvements": "Improvements",
+    "analyzeAnother": "Analyze another logo"
+  },
+  "donate": {
+    "limitTitle": "☕ Unlock 24h Unlimited with a Coffee",
+    "voluntaryTitle": "☕ Buy Me a Coffee",
+    "limitDesc": "You've used all 5 free analyses today. Help cover AI server costs and enjoy unlimited access for 24 hours. (Any amount welcome)",
+    "voluntaryDesc": "Logo Detective is free to use. If you found it helpful, a coffee would mean the world!",
+    "scanQR": "Scan the QR code with your {method} app.",
+    "recommendedAmount": "Suggested: $3 (a cup of coffee)",
+    "unlock": "I've donated → Unlock 24h unlimited",
+    "comeBackTomorrow": "I'll come back tomorrow",
+    "trust": "Honor system. We trust designers' integrity.",
+    "close": "Close",
+    "methods": {
+      "toss": "Toss",
+      "kakao": "KakaoPay",
+      "naver": "Naver Pay",
+      "kofi": "Ko-fi",
+      "paypal": "PayPal",
+      "wechat": "WeChat Pay",
+      "alipay": "Alipay"
+    }
+  },
+  "usage": {
+    "unlimited": "24h Unlimited",
+    "unlimitedShort": "Unlimited",
+    "used": "{used}/{limit} used today"
+  },
+  "footer": {
+    "madeBy": "Made by",
+    "creator": "dgodwonchan",
+    "tagline": "A designer who listens to designers",
+    "disclaimer": "AI analysis is for reference only. For legal plagiarism judgment, please consult a professional."
+  },
+  "errors": {
+    "imageOnly": "Only image files are allowed.",
+    "fileTooLarge": "Image must be 10MB or smaller.",
+    "analysisFailed": "Analysis failed. Please try again.",
+    "networkError": "Cannot connect to server. Please check your internet and try again.",
+    "rateLimit": "You've used all 5 free analyses today. ☕ Buy me a coffee to unlock 24h unlimited access."
+  }
+}

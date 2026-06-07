@@ -1,0 +1,97 @@
+{
+  "metadata": {
+    "title": "Logo Detective by dgodwonchan — 标志抄袭检测工具",
+    "description": "上传您的标志，AI将找出相似的现有品牌，评估抄袭风险并提供设计反馈。"
+  },
+  "header": {
+    "title": "Logo Detective",
+    "by": "by dgodwonchan",
+    "subtitle": "标志抄袭检测工具"
+  },
+  "hero": {
+    "title": "这个标志，好像在哪里见过？",
+    "description": "上传您设计的标志，AI会找出相似的真实品牌，评估抄袭风险等级，并提供专业的设计反馈。"
+  },
+  "upload": {
+    "replace": "点击更换其他图片",
+    "drop": "拖拽标志图片到此处，或点击选择",
+    "recommendedSize": "图片建议尺寸：宽度 500px 以上",
+    "formats": "PNG · JPG · WebP · 最大 10MB",
+    "camera": "拍照上传",
+    "startAnalysis": "开始分析",
+    "uploaded": "已上传的标志",
+    "fileInfo": "{name} · {size} KB"
+  },
+  "analyzing": {
+    "title": "AI 正在分析您的标志",
+    "subtitle": "通常需要 10–30 秒，请稍候。",
+    "steps": [
+      "正在提取形状、颜色和字体特征",
+      "正在匹配全球品牌数据库",
+      "正在评估抄袭风险并生成报告"
+    ]
+  },
+  "result": {
+    "riskLevel": "抄袭风险等级",
+    "safe": "安全",
+    "caution": "注意",
+    "danger": "危险",
+    "webDetection": "网络来源分析",
+    "webDetectionSubtitle": "(Google Vision AI)",
+    "keywords": "相关关键词",
+    "matchingPages": "该标志出现的网页",
+    "similarImages": "视觉上相似的标志 ({count}个)",
+    "clickToOpen": "点击图片查看原页面",
+    "designElements": "设计元素分析",
+    "colors": "颜色",
+    "shape": "形状",
+    "typography": "字体",
+    "similarBrands": "相似真实品牌 Top {count}",
+    "noSimilarBrands": "未发现明显相似的品牌。您的设计很可能是原创的。",
+    "designFeedback": "设计反馈",
+    "overall": "总体评价",
+    "pros": "优点",
+    "cautions": "注意事项",
+    "improvements": "改进建议",
+    "analyzeAnother": "分析其他标志"
+  },
+  "donate": {
+    "limitTitle": "☕ 一杯咖啡解锁 24 小时无限次",
+    "voluntaryTitle": "☕ 请我喝杯咖啡",
+    "limitDesc": "您今天已用完 5 次免费分析。如能帮助分担 AI 服务器费用，即可解锁 24 小时无限次使用。（金额随意）",
+    "voluntaryDesc": "Logo Detective 免费运营。如果对您有帮助，一杯咖啡就是最大的支持！",
+    "scanQR": "请使用 {method} 应用扫描二维码。",
+    "recommendedAmount": "建议金额：¥20（一杯咖啡）",
+    "unlock": "已完成捐赠 → 解锁 24 小时无限次",
+    "comeBackTomorrow": "我明天再来",
+    "trust": "基于诚信原则。我们相信设计师的自律。",
+    "close": "关闭",
+    "methods": {
+      "toss": "Toss",
+      "kakao": "KakaoPay",
+      "naver": "Naver Pay",
+      "kofi": "Ko-fi",
+      "paypal": "PayPal",
+      "wechat": "微信支付",
+      "alipay": "支付宝"
+    }
+  },
+  "usage": {
+    "unlimited": "24 小时无限次",
+    "unlimitedShort": "无限次",
+    "used": "今日已用 {used}/{limit} 次"
+  },
+  "footer": {
+    "madeBy": "Made by",
+    "creator": "dgodwonchan",
+    "tagline": "倾听设计师心声的设计师",
+    "disclaimer": "AI 分析结果仅供参考。如需法律层面的抄袭判定，请咨询专业人士。"
+  },
+  "errors": {
+    "imageOnly": "仅支持图片文件。",
+    "fileTooLarge": "图片大小不得超过 10MB。",
+    "analysisFailed": "分析失败，请重试。",
+    "networkError": "无法连接服务器，请检查网络后重试。",
+    "rateLimit": "您今天已用完 5 次免费分析。☕ 请我喝杯咖啡即可解锁 24 小时无限次使用。"
+  }
+}

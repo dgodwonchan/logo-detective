@@ -189,6 +189,7 @@ export async function POST(request: NextRequest) {
 
     const formData = await request.formData();
     const file = formData.get("image");
+    const locale = (formData.get("locale") as string) || "ko";
 
     if (!(file instanceof File)) {
       return Response.json(
@@ -217,12 +218,20 @@ export async function POST(request: NextRequest) {
 
     const ai = new GoogleGenAI({ apiKey });
 
+    // 언어별 프롬프트 추가
+    const langInstruction =
+      locale === "en"
+        ? "Respond entirely in English. Use natural, professional English suitable for designers."
+        : locale === "zh"
+        ? "用中文回答。使用专业、自然的中文，适合设计师阅读。"
+        : "한국어로 답변하세요. 디자이너에게 적합한 전문적이고 자연스러운 한국어를 사용하세요.";
+
     // 속도 최적화: Vision API와 Gemini를 진짜 병렬 호출
     // Gemini는 Vision 데이터 없이도 자체적으로 분석 가능 (프롬프트에 자동 DANGER 규칙 내장)
     // Vision 결과는 사후 처리로 보정 (유명 브랜드 매칭 시 강제 DANGER 적용)
     const visionPromise = detectWeb(base64Data);
 
-    const enhancedPrompt = ANALYSIS_PROMPT + `\n\n---\n[참고] similarBrands는 정확히 5개를 채우되, 단순히 같은 폰트 종류(산세리프 등)를 쓴다는 이유로 무관한 대형 브랜드(UNIQLO, H&M 등)를 끼워 넣지 마세요. 글자 모양·심볼 형태·컬러·전체 무드가 정말 닮은 브랜드만 골라 1순위부터 5순위까지 닮은 정도 순으로 배치하세요.`;
+    const enhancedPrompt = ANALYSIS_PROMPT + `\n\n---\n[언어 설정] ${langInstruction}\n\n[참고] similarBrands는 정확히 5개를 채우되, 단순히 같은 폰트 종류(산세리프 등)를 쓴다는 이유로 무관한 대형 브랜드(UNIQLO, H&M 등)를 끼워 넣지 마세요. 글자 모양·심볼 형태·컬러·전체 무드가 정말 닮은 브랜드만 골라 1순위부터 5순위까지 닮은 정도 순으로 배치하세요.`;
 
     const geminiPromise = ai.models.generateContent({
       model: "gemini-2.5-flash",
