@@ -56,12 +56,12 @@
     "analyzeAnother": "다른 로고 분석하기"
   },
   "donate": {
-    "limitTitle": "☕ 커피 한 잔으로 24시간 무제한",
+    "limitTitle": "☕️ 커피 한 잔 후원하고 24시간 무제한 사용하기",
     "voluntaryTitle": "☕ 커피 한 잔 후원하기",
-    "limitDesc": "오늘의 무료 분석 5회를 모두 사용하셨습니다. AI 분석 서버 비용을 충당할 수 있도록 도와주시면, 24시간 동안 무제한으로 이용하실 수 있습니다.(후원 금액 자유)",
+    "limitDesc": "오늘의 무료 감정 5회를 모두 사용하셨습니다. Logo Detective의 지속적인 운영을 응원해 주시면, 감사의 의미로 24시간 무제한 이용권을 드립니다.",
     "voluntaryDesc": "Logo Detective는 무료로 운영됩니다. 도움이 되셨다면 커피 한 잔으로 응원해 주세요.",
     "scanQR": "{method} 앱으로 QR을 스캔해 주세요.",
-    "payButton": "{method}(으)로 후원하기",
+    "payButton": "{method}로 후원하기",
     "recommendedAmount": "추천 금액: 3,000원 (커피 한 잔)",
     "unlock": "후원 완료했어요 → 24시간 무제한 이용",
     "comeBackTomorrow": "내일 다시 올게요",
