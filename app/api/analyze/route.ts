@@ -7,6 +7,34 @@ export const runtime = "nodejs";
 // 분석은 시간이 걸릴 수 있으므로 Vercel 배포 시에도 60초까지 허용
 export const maxDuration = 60;
 
+async function sleep(ms: number) {
+  return new Promise<void>((r) => setTimeout(r, ms));
+}
+
+/** Gemini API 재시도: 503/overloaded 시 최대 3회, 지수 백오프(2s, 4s, 8s). 429/quota는 즉시 실패 */
+async function geminiWithRetry(
+  ai: GoogleGenAI,
+  params: Parameters<GoogleGenAI["models"]["generateContent"]>[0],
+  maxRetries = 3,
+  baseDelay = 2000
+) {
+  let lastError: unknown;
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      const res = await ai.models.generateContent(params);
+      if (res && (res as any).text != null) return res;
+      lastError = new Error("Empty response");
+    } catch (err) {
+      lastError = err;
+      const msg = (err instanceof Error ? err.message : String(err)).toLowerCase();
+      // quota 초과는 재시도 의미 없음
+      if (msg.includes("429") || msg.includes("quota") || msg.includes("resource_exhausted")) throw err;
+    }
+    if (attempt < maxRetries) await sleep(baseDelay * attempt);
+  }
+  throw lastError;
+}
+
 const ANALYSIS_PROMPT = `당신은 글로벌 브랜드 아이덴티티와 상표법 분야의 세계적 권위자이며, 동시에 신진 디자이너를 공정하게 평가하고 키우는 멘토입니다.
 
 [전제]
@@ -233,7 +261,7 @@ export async function POST(request: NextRequest) {
 
     const enhancedPrompt = ANALYSIS_PROMPT + `\n\n---\n[언어 설정] ${langInstruction}\n\n[참고] similarBrands는 정확히 5개를 채우되, 단순히 같은 폰트 종류(산세리프 등)를 쓴다는 이유로 무관한 대형 브랜드(UNIQLO, H&M 등)를 끼워 넣지 마세요. 글자 모양·심볼 형태·컬러·전체 무드가 정말 닮은 브랜드만 골라 1순위부터 5순위까지 닮은 정도 순으로 배치하세요.`;
 
-    const geminiPromise = ai.models.generateContent({
+    const geminiPromise = geminiWithRetry(ai, {
       model: "gemini-2.5-flash",
       contents: [
         {
@@ -254,7 +282,7 @@ export async function POST(request: NextRequest) {
         responseSchema,
         temperature: 0.4,
       },
-    });
+    }, 3, 2000);
 
     // 둘 다 동시에 기다리기
     const [webResult, response] = await Promise.all([visionPromise, geminiPromise]);
