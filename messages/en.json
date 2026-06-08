@@ -24,7 +24,7 @@
   },
   "analyzing": {
     "title": "AI is analyzing your logo",
-    "subtitle": "This usually takes 10–30 seconds. Please wait a moment.",
+    "subtitle": "This usually takes about 20–50 seconds. Please wait a moment.",
     "steps": [
       "Extracting shape, color, and typography",
       "Matching with global brand database",

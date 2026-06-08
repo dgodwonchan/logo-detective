@@ -280,7 +280,11 @@ export async function POST(request: NextRequest) {
       config: {
         responseMimeType: "application/json",
         responseSchema,
-        temperature: 0.4,
+        temperature: 0.2,
+        maxOutputTokens: 2048,
+        thinkingConfig: {
+          thinkingBudget: 0,
+        },
       },
     }, 3, 2000);
 
