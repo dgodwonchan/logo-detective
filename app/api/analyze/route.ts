@@ -259,12 +259,32 @@ export async function POST(request: NextRequest) {
         ? "用中文回答。不要出现任何韩文或英文字符。使用专业、自然的中文，适合设计师阅读。"
         : "한국어로 답변하세요. 영어나 중국어 문자를 절대 사용하지 마세요. 디자이너에게 적합한 전문적이고 자연스러운 한국어를 사용하세요.";
 
-    // Vision API와 Gemini를 병렬 호출
-    const visionPromise = detectWeb(base64Data);
+    // Vision API를 먼저 실행해 식별 신호를 Gemini에 참고로 전달 (정확도 우선)
+    const webResult = await detectWeb(base64Data);
 
-    const enhancedPrompt = ANALYSIS_PROMPT + `\n\n---\n[언어 설정] ${langInstruction}\n\n[참고] similarBrands는 시각적 유사도가 높은 것을 최대 5개까지만 나열하되, 정말 유사하지 않다면 3개 이하도 괜찮습니다. 무관한 대형 브랜드를 채우기 위해 억지로 넣지 마세요. 글자 모양·심볼 형태·컬러·전체 무드가 정말 닮은 브랜드만 골라 1순위부터 닮은 정도 순으로 배치하세요.\n[브랜드명 표기] 국제적인 고유명사(예: Nike, Starbucks, Instagram 등)는 원래 언어 형태 그대로 표기하고, 그 뒤에 괄호 안에 현지어 번역을 덧붙일 수 있습니다. 일반명사는 언어 설정에 맞게 번역합니다.`;
+    // Vision 신호 구성 — 단, "검색 키워드/출처일 뿐 = 그 브랜드 로고"가 아님을 반드시 명시
+    let visionHint = "";
+    if (webResult) {
+      const ents = (webResult.entities || []).slice(0, 8).filter(Boolean);
+      const pageTitles = (webResult.matchingPages || [])
+        .map((p) => p.pageTitle)
+        .filter(Boolean)
+        .slice(0, 5);
+      if (ents.length > 0 || pageTitles.length > 0) {
+        visionHint =
+          `\n\n---\n[Google Vision 참고 신호 — 해석 주의]\n` +
+          `아래는 Google Vision이 이 이미지와 시각적으로 연관지어 찾은 "검색 키워드"와 "이미지가 등장한 웹페이지 제목"입니다. ` +
+          `이것은 단순 검색/출처 정보이며, **절대 "이 로고가 곧 그 브랜드의 공식 로고"라는 뜻이 아닙니다.** ` +
+          `특히 어떤 이미지가 Google Play, Instagram, Facebook, Pinterest, Amazon 등에 게시되어 있다고 해서 그 이미지가 구글/인스타/페이스북 로고인 것은 절대 아닙니다. ` +
+          `이 신호는 오직 "업로드된 로고가 실제로 어떤 브랜드/업종의 것인지" 정체를 파악하는 보조 단서로만 쓰고, 표절 여부는 반드시 이미지 자체의 시각적 비교로만 판단하세요.\n` +
+          (ents.length > 0 ? `- 연관 키워드: ${ents.join(", ")}\n` : "") +
+          (pageTitles.length > 0 ? `- 등장 웹페이지 제목: ${pageTitles.join(" | ")}\n` : "");
+      }
+    }
 
-    const geminiPromise = geminiWithRetry(ai, {
+    const enhancedPrompt = ANALYSIS_PROMPT + `\n\n---\n[언어 설정] ${langInstruction}\n\n[참고] similarBrands는 시각적 유사도가 높은 것을 최대 5개까지만 나열하되, 정말 유사하지 않다면 3개 이하도 괜찮습니다. 무관한 대형 브랜드를 채우기 위해 억지로 넣지 마세요. 글자 모양·심볼 형태·컬러·전체 무드가 정말 닮은 브랜드만 골라 1순위부터 닮은 정도 순으로 배치하세요.\n[브랜드명 표기] 국제적인 고유명사(예: Nike, Starbucks, Instagram 등)는 원래 언어 형태 그대로 표기하고, 그 뒤에 괄호 안에 현지어 번역을 덧붙일 수 있습니다. 일반명사는 언어 설정에 맞게 번역합니다.` + visionHint;
+
+    const response = await geminiWithRetry(ai, {
       model: "gemini-2.5-flash",
       contents: [
         {
@@ -291,9 +311,6 @@ export async function POST(request: NextRequest) {
       },
     }, 3, 2000);
 
-    // 둘 다 동시에 기다리기
-    const [webResult, response] = await Promise.all([visionPromise, geminiPromise]);
-
     const text = response.text;
     if (!text) {
       return Response.json(
@@ -318,70 +335,6 @@ export async function POST(request: NextRequest) {
         (a: { similarityScore: number }, b: { similarityScore: number }) =>
           b.similarityScore - a.similarityScore
       );
-    }
-
-    // ===== Vision API 사후 처리: 유명 브랜드 매칭 시 강제 DANGER =====
-    // 유명 브랜드 공식 도메인 매칭 시 = 사용자가 그 로고를 자기 디자인이라고 올린 것 = 표절
-    if (webResult && webResult.matchingPages.length > 0) {
-      const FAMOUS_DOMAINS: { domain: string; brand: string; url: string; industry: string; country: string; founded: string }[] = [
-        { domain: "apple.com", brand: "Apple Inc.", url: "https://www.apple.com", industry: "기술/전자제품", country: "미국", founded: "1976" },
-        { domain: "amazon.com", brand: "Amazon", url: "https://www.amazon.com", industry: "전자상거래/클라우드", country: "미국", founded: "1994" },
-        { domain: "nike.com", brand: "Nike", url: "https://www.nike.com", industry: "스포츠웨어", country: "미국", founded: "1964" },
-        { domain: "google.com", brand: "Google", url: "https://www.google.com", industry: "기술/검색", country: "미국", founded: "1998" },
-        { domain: "samsung.com", brand: "Samsung", url: "https://www.samsung.com", industry: "전자제품", country: "한국", founded: "1938" },
-        { domain: "microsoft.com", brand: "Microsoft", url: "https://www.microsoft.com", industry: "소프트웨어", country: "미국", founded: "1975" },
-        { domain: "meta.com", brand: "Meta", url: "https://www.meta.com", industry: "소셜미디어", country: "미국", founded: "2004" },
-        { domain: "facebook.com", brand: "Facebook", url: "https://www.facebook.com", industry: "소셜미디어", country: "미국", founded: "2004" },
-        { domain: "instagram.com", brand: "Instagram", url: "https://www.instagram.com", industry: "소셜미디어", country: "미국", founded: "2010" },
-        { domain: "twitter.com", brand: "X (Twitter)", url: "https://x.com", industry: "소셜미디어", country: "미국", founded: "2006" },
-        { domain: "x.com", brand: "X (Twitter)", url: "https://x.com", industry: "소셜미디어", country: "미국", founded: "2006" },
-        { domain: "starbucks.com", brand: "Starbucks", url: "https://www.starbucks.com", industry: "F&B", country: "미국", founded: "1971" },
-        { domain: "mcdonalds.com", brand: "McDonald's", url: "https://www.mcdonalds.com", industry: "F&B", country: "미국", founded: "1940" },
-        { domain: "coca-cola.com", brand: "Coca-Cola", url: "https://www.coca-cola.com", industry: "음료", country: "미국", founded: "1892" },
-        { domain: "adidas.com", brand: "Adidas", url: "https://www.adidas.com", industry: "스포츠웨어", country: "독일", founded: "1949" },
-        { domain: "tesla.com", brand: "Tesla", url: "https://www.tesla.com", industry: "전기차", country: "미국", founded: "2003" },
-        { domain: "netflix.com", brand: "Netflix", url: "https://www.netflix.com", industry: "스트리밍", country: "미국", founded: "1997" },
-        { domain: "spotify.com", brand: "Spotify", url: "https://www.spotify.com", industry: "음악 스트리밍", country: "스웨덴", founded: "2006" },
-      ];
-
-      let famousMatch: typeof FAMOUS_DOMAINS[number] | null = null;
-      for (const page of webResult.matchingPages) {
-        try {
-          const host = new URL(page.url).hostname.replace(/^www\./, "");
-          const found = FAMOUS_DOMAINS.find((d) => host === d.domain || host.endsWith("." + d.domain));
-          if (found) {
-            famousMatch = found;
-            break;
-          }
-        } catch {
-          /* 잘못된 URL은 무시 */
-        }
-      }
-
-      if (famousMatch) {
-        // 강제 DANGER 판정
-        parsed.riskLevel = "danger";
-        parsed.riskReason = `이 이미지는 ${famousMatch.brand}의 등록된 공식 로고와 동일/거의 동일합니다. 이를 본인의 새 디자인이라고 사용할 경우 명백한 상표권 침해에 해당하며, 법적 분쟁 위험이 매우 높습니다. 완전히 다른 독창적 디자인을 만드세요.`;
-
-        // similarBrands 1순위에 해당 브랜드 강제 삽입 (이미 있으면 점수만 보정, 없으면 추가)
-        const existingIdx = (parsed.similarBrands || []).findIndex(
-          (b: { name: string }) => b.name?.toLowerCase().includes(famousMatch!.brand.toLowerCase().split(" ")[0])
-        );
-        const famousBrandEntry = {
-          name: famousMatch.brand,
-          industry: famousMatch.industry,
-          country: famousMatch.country,
-          foundedYear: famousMatch.founded,
-          similarityScore: 100,
-          reasonForSimilarity: `Google Vision AI가 이 이미지를 ${famousMatch.brand} 공식 로고로 식별했습니다. 시각적으로 동일한 수준입니다.`,
-          officialUrl: famousMatch.url,
-        };
-        if (!Array.isArray(parsed.similarBrands)) parsed.similarBrands = [];
-        if (existingIdx >= 0) {
-          parsed.similarBrands.splice(existingIdx, 1);
-        }
-        parsed.similarBrands.unshift(famousBrandEntry);
-      }
     }
 
     // 분석 성공 시 카운트 소비 + 응답에 잔여 횟수 포함
