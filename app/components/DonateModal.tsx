@@ -104,8 +104,6 @@ export default function DonateModal({
               </div>
               <p className="mt-3 text-xs text-zinc-500 dark:text-zinc-400 text-center leading-relaxed">
                 {t('scanQR', { method: current.label })}
-                <br />
-                {t('recommendedAmount')}
               </p>
             </div>
           )}
@@ -119,9 +117,7 @@ export default function DonateModal({
           >
             {t('payButton', { method: current.label })}
           </a>
-          {!current.qr && (
-            <p className="text-xs text-zinc-500 dark:text-zinc-400 text-center leading-relaxed">{t('recommendedAmount')}</p>
-          )}
+          <p className="text-xs text-zinc-500 dark:text-zinc-400 text-center leading-relaxed">{t('recommendedAmount')}</p>
         </div>
 
         {reason === "limit" ? (
