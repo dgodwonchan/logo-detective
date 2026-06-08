@@ -57,9 +57,9 @@
   },
   "donate": {
     "limitTitle": "☕️ Buy us a coffee & unlock 24-hour unlimited access",
-    "voluntaryTitle": "☕ Buy Me a Coffee",
+    "voluntaryTitle": "☕️ Buy us a coffee & unlock 24-hour unlimited access",
     "limitDesc": "You've used all 5 free analyses for today. If you'd like to support Logo Detective's ongoing operations, we'll thank you with unlimited access for the next 24 hours.",
-    "voluntaryDesc": "Logo Detective is free to use. If you found it helpful, a coffee would mean the world!",
+    "voluntaryDesc": "You've used all 5 free analyses for today. If you'd like to support Logo Detective's ongoing operations, we'll thank you with unlimited access for the next 24 hours.",
     "scanQR": "Scan the QR code with your {method} app.",
     "payButton": "Donate with {method}",
     "recommendedAmount": "Suggested: $3 (a cup of coffee)",

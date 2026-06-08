@@ -57,9 +57,9 @@
   },
   "donate": {
     "limitTitle": "☕️ 请作者喝杯咖啡，解锁 24 小时无限使用",
-    "voluntaryTitle": "☕ 请我喝杯咖啡",
+    "voluntaryTitle": "☕️ 请作者喝杯咖啡，解锁 24 小时无限使用",
     "limitDesc": "您今天的 5 次免费检测已全部使用完毕。如果您愿意支持 Logo Detective 的持续运营，感谢您的每一杯咖啡，赠送 24 小时无限次使用权限。",
-    "voluntaryDesc": "Logo Detective 免费运营。如果对您有帮助，一杯咖啡就是最大的支持！",
+    "voluntaryDesc": "您今天的 5 次免费检测已全部使用完毕。如果您愿意支持 Logo Detective 的持续运营，感谢您的每一杯咖啡，赠送 24 小时无限次使用权限。",
     "scanQR": "请使用 {method} 应用扫描二维码。",
     "payButton": "通过 {method} 捐赠",
     "recommendedAmount": "建议金额：¥20（一杯咖啡）",
