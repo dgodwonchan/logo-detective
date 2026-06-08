@@ -61,6 +61,7 @@
     "limitDesc": "您今天已用完 5 次免费分析。如能帮助分担 AI 服务器费用，即可解锁 24 小时无限次使用。（金额随意）",
     "voluntaryDesc": "Logo Detective 免费运营。如果对您有帮助，一杯咖啡就是最大的支持！",
     "scanQR": "请使用 {method} 应用扫描二维码。",
+    "payButton": "通过 {method} 捐赠",
     "recommendedAmount": "建议金额：¥20（一杯咖啡）",
     "unlock": "已完成捐赠 → 解锁 24 小时无限次",
     "comeBackTomorrow": "我明天再来",
@@ -73,8 +74,26 @@
       "kofi": "Ko-fi",
       "paypal": "PayPal",
       "wechat": "微信支付",
-      "alipay": "支付宝"
+      "alipay": "支付宝",
+      "afdian": "爱发电"
     }
+  },
+  "sponsor": {
+    "title": "对您有帮助吗？",
+    "desc": "Logo Detective 免费运营。AI 分析和服务器都需要成本。用一杯咖啡支持这个项目吧。",
+    "button": "支持一下"
+  },
+  "classes": {
+    "heading": "更深入的品牌设计学习",
+    "subtitle": "dgodwonchan 的设计课程",
+    "badgeOffline": "线下",
+    "badgeOnline": "线上",
+    "items": [
+      { "title": "DIAD 品牌设计课程", "subtitle": "线下 · 共10周 · 通过13种识别系统掌握品牌设计" },
+      { "title": "DIAD 设计基础课程", "subtitle": "线下 · 共10周 · 为设计师起步打基础的工作坊" },
+      { "title": "Coloso · 品牌/包装设计大师课", "subtitle": "线上 VOD · 通过13种识别系统学习品牌与包装设计" },
+      { "title": "Coloso · 设计思潮 + AI 实战", "subtitle": "线上 VOD · 百年设计思潮与AI应用大师课" }
+    ]
   },
   "usage": {
     "unlimited": "24 小时无限次",

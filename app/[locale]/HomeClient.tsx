@@ -153,6 +153,11 @@ export default function HomeClient({ locale }: { locale: string }) {
 
             {/* 소셜 아이콘 (sm 이상) */}
             <nav className="hidden sm:flex items-center gap-0.5" aria-label="Social channels">
+              {locale === 'zh' && (
+                <a href="https://www.xiaohongshu.com/user/profile/67e9d4c0000000000a03c6b6" target="_blank" rel="noopener noreferrer" aria-label="小红书" className="h-7 w-7 sm:h-8 sm:w-8 rounded-full flex items-center justify-center text-[#FF2442] hover:bg-rose-50 dark:hover:bg-rose-950/40 transition">
+                  <svg className="h-3.5 w-3.5 sm:h-4 sm:w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                </a>
+              )}
               <a href="https://www.youtube.com/@wonchan" target="_blank" rel="noopener noreferrer" className="h-7 w-7 sm:h-8 sm:w-8 rounded-full flex items-center justify-center text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 transition">
                 <svg className="h-3.5 w-3.5 sm:h-4 sm:w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" /></svg>
               </a>
@@ -439,6 +444,11 @@ export default function HomeClient({ locale }: { locale: string }) {
       <footer className="border-t border-zinc-200 dark:border-zinc-800 mt-8">
         <div className="mx-auto max-w-5xl px-6 py-6 flex flex-col items-center gap-4">
           <nav className="flex items-center gap-3" aria-label="Social channels">
+            {locale === 'zh' && (
+              <a href="https://www.xiaohongshu.com/user/profile/67e9d4c0000000000a03c6b6" target="_blank" rel="noopener noreferrer" aria-label="小红书" className="h-9 w-9 rounded-full flex items-center justify-center text-[#FF2442] hover:bg-rose-50 dark:hover:bg-rose-950/40 transition bg-zinc-100 dark:bg-zinc-800">
+                <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              </a>
+            )}
             <a href="https://www.youtube.com/@wonchan" target="_blank" rel="noopener noreferrer" className="h-9 w-9 rounded-full flex items-center justify-center text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 transition bg-zinc-100 dark:bg-zinc-800">
               <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" /></svg>
             </a>

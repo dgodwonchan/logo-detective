@@ -4,7 +4,16 @@ import { useState } from "react";
 import { useTranslations } from 'next-intl';
 import type { LimitStatus } from "../types";
 
-type Method = "toss" | "kakao" | "naver" | "kofi" | "paypal" | "wechat" | "alipay";
+type Method = "toss" | "kakao" | "naver" | "kofi" | "paypal" | "wechat" | "alipay" | "afdian";
+
+type MethodConfig = {
+  id: Method;
+  label: string;
+  link: string;
+  qr?: string;
+  color: string;
+  textColor: string;
+};
 
 export default function DonateModal({
   open,
@@ -21,21 +30,20 @@ export default function DonateModal({
 }) {
   const t = useTranslations('donate');
 
-  const METHODS: { id: Method; label: string; qr: string; color: string; textColor: string }[] =
+  const METHODS: MethodConfig[] =
     locale === 'ko'
       ? [
-          { id: "toss", label: t('methods.toss'), qr: "/donate-toss.png", color: "bg-[#0064FF] hover:bg-[#0050cc]", textColor: "text-white" },
-          { id: "kakao", label: t('methods.kakao'), qr: "/donate-kakao.png", color: "bg-[#FFE812] hover:bg-[#f0d800]", textColor: "text-zinc-900" },
-          { id: "naver", label: t('methods.naver'), qr: "/donate-naver.png", color: "bg-[#03C75A] hover:bg-[#02a04a]", textColor: "text-white" },
+          { id: "toss", label: t('methods.toss'), link: "supertoss://send?amount=0&bank=%ED%86%A0%EC%8A%A4%EB%B1%85%ED%81%AC&accountNo=100014063448&origin=qr", qr: "/donate-toss.png", color: "bg-[#0064FF] hover:bg-[#0050cc]", textColor: "text-white" },
+          { id: "kakao", label: t('methods.kakao'), link: "https://qr.kakaopay.com/281006011000087883138371", qr: "/donate-kakao.png", color: "bg-[#FFE812] hover:bg-[#f0d800]", textColor: "text-zinc-900" },
+          { id: "naver", label: t('methods.naver'), link: "https://pay.naver.com/remit/qr/inflow?v=1&a=100138540155&c=089&d=c8c354b64f60f55645d8436073d6d58e", qr: "/donate-naver.png", color: "bg-[#03C75A] hover:bg-[#02a04a]", textColor: "text-white" },
         ]
       : locale === 'zh'
       ? [
-          { id: "wechat", label: t('methods.wechat'), qr: "/donate-wechat.png", color: "bg-[#07C160] hover:bg-[#06a050]", textColor: "text-white" },
-          { id: "alipay", label: t('methods.alipay'), qr: "/donate-alipay.png", color: "bg-[#1677FF] hover:bg-[#1366d9]", textColor: "text-white" },
+          { id: "afdian", label: t('methods.afdian'), link: "https://www.ifdian.net/item/1c632702631f11f18e5452540025c377", qr: "/donate-afdian.png", color: "bg-[#946ce6] hover:bg-[#8055d9]", textColor: "text-white" },
         ]
       : [
-          { id: "kofi", label: t('methods.kofi'), qr: "/donate-kofi.png", color: "bg-[#FF5E5B] hover:bg-[#e04a47]", textColor: "text-white" },
-          { id: "paypal", label: t('methods.paypal'), qr: "/donate-paypal.png", color: "bg-[#003087] hover:bg-[#00246b]", textColor: "text-white" },
+          { id: "kofi", label: t('methods.kofi'), link: "https://ko-fi.com/E3U62109OU", qr: "/donate-kofi.png", color: "bg-[#FF5E5B] hover:bg-[#e04a47]", textColor: "text-white" },
+          { id: "paypal", label: t('methods.paypal'), link: "https://paypal.me/leewonchan", color: "bg-[#003087] hover:bg-[#00246b]", textColor: "text-white" },
         ];
 
   const [selected, setSelected] = useState<Method>(METHODS[0].id);
@@ -57,7 +65,7 @@ export default function DonateModal({
     } finally { setSubmitting(false); }
   };
 
-  const current = METHODS.find((m) => m.id === selected)!;
+  const current = METHODS.find((m) => m.id === selected) ?? METHODS[0];
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" onClick={onClose}>
@@ -74,26 +82,46 @@ export default function DonateModal({
           </div>
         </div>
 
-        <div className="px-6 pt-4">
-          <div className={`grid gap-2 ${METHODS.length > 2 ? 'grid-cols-3' : 'grid-cols-2'}`}>
-            {METHODS.map((m) => (
-              <button key={m.id} onClick={() => setSelected(m.id)}
-                className={`rounded-lg py-2.5 text-sm font-semibold transition ${selected === m.id ? `${m.color} ${m.textColor} shadow` : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700'}`}>
-                {m.label}
-              </button>
-            ))}
+        {METHODS.length > 1 && (
+          <div className="px-6 pt-4">
+            <div className={`grid gap-2 ${METHODS.length > 2 ? 'grid-cols-3' : 'grid-cols-2'}`}>
+              {METHODS.map((m) => (
+                <button key={m.id} onClick={() => setSelected(m.id)}
+                  className={`rounded-lg py-2.5 text-sm font-semibold transition ${selected === m.id ? `${m.color} ${m.textColor} shadow` : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:hover:bg-zinc-700'}`}>
+                  {m.label}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
-        <div className="px-6 py-5">
-          <div className="rounded-xl bg-white border border-zinc-200 dark:border-zinc-700 p-3 flex items-center justify-center">
-            <img src={current.qr} alt={`${current.label} QR`} className="max-h-72 w-auto object-contain" />
-          </div>
-          <p className="mt-3 text-xs text-zinc-500 dark:text-zinc-400 text-center leading-relaxed">
-            {t('scanQR', { method: current.label })}
-            <br />
-            {t('recommendedAmount')}
-          </p>
+        <div className="px-6 py-5 space-y-4">
+          {/* QR: 데스크탑에서만 (모바일은 자기 화면 QR 스캔 불가) */}
+          {current.qr && (
+            <div className="hidden sm:block">
+              <div className="rounded-xl bg-white border border-zinc-200 dark:border-zinc-700 p-3 flex items-center justify-center">
+                <img src={current.qr} alt={`${current.label} QR`} className="max-h-64 w-auto object-contain" />
+              </div>
+              <p className="mt-3 text-xs text-zinc-500 dark:text-zinc-400 text-center leading-relaxed">
+                {t('scanQR', { method: current.label })}
+                <br />
+                {t('recommendedAmount')}
+              </p>
+            </div>
+          )}
+
+          {/* CTA 버튼: 데스크탑/모바일 공통 */}
+          <a
+            href={current.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`block w-full rounded-xl py-3 text-center text-sm font-semibold shadow transition ${current.color} ${current.textColor}`}
+          >
+            {t('payButton', { method: current.label })}
+          </a>
+          {!current.qr && (
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 text-center leading-relaxed">{t('recommendedAmount')}</p>
+          )}
         </div>
 
         {reason === "limit" ? (

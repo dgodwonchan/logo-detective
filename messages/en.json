@@ -61,6 +61,7 @@
     "limitDesc": "You've used all 5 free analyses today. Help cover AI server costs and enjoy unlimited access for 24 hours. (Any amount welcome)",
     "voluntaryDesc": "Logo Detective is free to use. If you found it helpful, a coffee would mean the world!",
     "scanQR": "Scan the QR code with your {method} app.",
+    "payButton": "Donate with {method}",
     "recommendedAmount": "Suggested: $3 (a cup of coffee)",
     "unlock": "I've donated → Unlock 24h unlimited",
     "comeBackTomorrow": "I'll come back tomorrow",
@@ -73,8 +74,26 @@
       "kofi": "Ko-fi",
       "paypal": "PayPal",
       "wechat": "WeChat Pay",
-      "alipay": "Alipay"
+      "alipay": "Alipay",
+      "afdian": "Afdian"
     }
+  },
+  "sponsor": {
+    "title": "Was this helpful?",
+    "desc": "Logo Detective is free to use. AI analysis and server costs add up. Support the project with a cup of coffee.",
+    "button": "Support"
+  },
+  "classes": {
+    "heading": "Go deeper into brand design",
+    "subtitle": "Classes by dgodwonchan",
+    "badgeOffline": "Offline",
+    "badgeOnline": "Online",
+    "items": [
+      { "title": "DIAD Branding Class", "subtitle": "Offline · 10 weeks · Master branding through 13 identity systems" },
+      { "title": "DIAD Design Foundations Class", "subtitle": "Offline · 10 weeks · A foundational workshop for your first steps as a designer" },
+      { "title": "Coloso · Branding & Package Design Master", "subtitle": "Online VOD · Branding and package design through 13 identity systems" },
+      { "title": "Coloso · Design Movements + AI in Practice", "subtitle": "Online VOD · 100 years of design movements and mastering AI" }
+    ]
   },
   "usage": {
     "unlimited": "24h Unlimited",

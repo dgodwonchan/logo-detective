@@ -17,7 +17,7 @@
     "drop": "로고 이미지를 끌어다 놓거나 클릭해서 선택하세요",
     "recommendedSize": "이미지 권장 크기: 가로 500px 이상",
     "formats": "PNG · JPG · WebP · 최대 10MB",
-    "camera": "칩으로 촬영",
+    "camera": "카메라로 촬영",
     "startAnalysis": "분석 시작",
     "uploaded": "업로드한 로고",
     "fileInfo": "{name} · {size} KB"
@@ -58,9 +58,10 @@
   "donate": {
     "limitTitle": "☕ 커피 한 잔으로 24시간 무제한",
     "voluntaryTitle": "☕ 커피 한 잔 후원하기",
-    "limitDesc": "오늘의 무로 분석 5회를 모두 사용하셨습니다. AI 분석 서버 비용을 충당할 수 있도록 도와주시면, 24시간 동안 무제한으로 이용하실 수 있습니다.(후원 금액 자유)",
-    "voluntaryDesc": "Logo Detective는 무로 운영됩니다. 도움이 되셨다면 커피 한 잔으로 응원해 주세요.",
+    "limitDesc": "오늘의 무료 분석 5회를 모두 사용하셨습니다. AI 분석 서버 비용을 충당할 수 있도록 도와주시면, 24시간 동안 무제한으로 이용하실 수 있습니다.(후원 금액 자유)",
+    "voluntaryDesc": "Logo Detective는 무료로 운영됩니다. 도움이 되셨다면 커피 한 잔으로 응원해 주세요.",
     "scanQR": "{method} 앱으로 QR을 스캔해 주세요.",
+    "payButton": "{method}(으)로 후원하기",
     "recommendedAmount": "추천 금액: 3,000원 (커피 한 잔)",
     "unlock": "후원 완료했어요 → 24시간 무제한 이용",
     "comeBackTomorrow": "내일 다시 올게요",
@@ -73,8 +74,26 @@
       "kofi": "Ko-fi",
       "paypal": "PayPal",
       "wechat": "위챗페이",
-      "alipay": "알리페이"
+      "alipay": "알리페이",
+      "afdian": "아이파디엔"
     }
+  },
+  "sponsor": {
+    "title": "도움이 되셨나요?",
+    "desc": "Logo Detective는 무료로 운영됩니다. AI 분석 비용과 서버 운영비가 발생해요. 커피 한 잔으로 프로젝트를 응원해 주세요.",
+    "button": "후원하기"
+  },
+  "classes": {
+    "heading": "더 깊은 브랜드 디자인 학습",
+    "subtitle": "네카라쿠베 실무자도 수강하는 디고디원찬 클래스",
+    "badgeOffline": "오프라인",
+    "badgeOnline": "온라인",
+    "items": [
+      { "title": "DIAD 브랜딩 클래스", "subtitle": "오프라인 · 총 10주 · 13가지 아이덴티티로 배우는 브랜딩 마스터" },
+      { "title": "DIAD 디자인기초 클래스", "subtitle": "오프라인 · 총 10주 · 디자이너의 첫 발걸음을 위한 기초 워크숍" },
+      { "title": "Coloso · 브랜딩/패키지 디자인 마스터", "subtitle": "온라인 VOD · 13가지 아이덴티티로 배우는 브랜딩과 패키지 디자인" },
+      { "title": "Coloso · 디자인사조 + AI 활용 실무", "subtitle": "온라인 VOD · 100년의 디자인 사조와 AI 활용 마스터" }
+    ]
   },
   "usage": {
     "unlimited": "24시간 무제한",
@@ -92,6 +111,6 @@
     "fileTooLarge": "이미지 크기는 10MB 이하여야 합니다.",
     "analysisFailed": "분석에 실패했습니다.",
     "networkError": "서버에 연결할 수 없습니다. 인터넷 연결을 확인하고 잠시 후 다시 시도해 주세요.",
-    "rateLimit": "오늘의 무로 분석 횟수(5회)를 모두 사용하셨어요. ☕ 커피 한 잔 후원해주시면 24시간 무제한으로 이용하실 수 있습니다."
+    "rateLimit": "오늘의 무료 분석 횟수(5회)를 모두 사용하셨어요. ☕ 커피 한 잔 후원해주시면 24시간 무제한으로 이용하실 수 있습니다."
   }
 }
